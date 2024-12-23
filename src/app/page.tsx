@@ -2,7 +2,7 @@
 export default function Home() {
   return (
     <div>
-      website
+      website1
     </div>
   );
 }
