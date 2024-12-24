@@ -27,7 +27,7 @@ export default function AnnouncementList() {
         <div>
             <h1>공지사항</h1>
             {announcements.length === 0 ? (
-                <p>등록된 공지사항이 없습니다..</p>
+                <p>등록된 공지사항이 없습니다.</p>
             ) : (
                 announcements.map((announcement, index) => (
                     <div

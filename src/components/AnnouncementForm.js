@@ -80,7 +80,7 @@ export default function AnnouncementForm() {
 
     return (
         <div>
-            <h1>Create Announcement</h1>
+            <h1>공지 작성</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -114,9 +114,9 @@ export default function AnnouncementForm() {
             {statusMessage && <p style={{ marginTop: "10px", color: "green" }}>{statusMessage}</p>}
 
             <div style={{ marginTop: "20px" }}>
-                <h2>Announcements</h2>
+                <h2>공지사항</h2>
                 {announcements.length === 0 ? (
-                    <p>No announcements available.</p>
+                    <p>작성된 공지가 없어요.</p>
                 ) : (
                     announcements.map((announcement, index) => (
                         <div
