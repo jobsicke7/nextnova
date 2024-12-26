@@ -16,8 +16,18 @@ const GNB: React.FC = () => {
     return (
         <>
             <div className={styles.gnb}>
+
                 <div className={styles.logo}>
-                    <Link href="/">NEXTNOVA</Link>
+                    <Link href="/" className={styles.logoLink}>
+                        <Image
+                            src="/icons/supernova.svg"
+                            alt="supernova icon"
+                            className={styles.supernovaIcon}
+                            width={24}
+                            height={24}
+                        />
+                        NEXTNOVA
+                    </Link>
                 </div>
 
                 <ul className={styles.menu}>
@@ -35,8 +45,8 @@ const GNB: React.FC = () => {
                         src="/icons/menu.svg"
                         alt="menu icon"
                         className={styles.menuIcon}
-                        width={20}
-                        height={20}
+                        width={30}
+                        height={30}
                         onClick={handleClick}
                     />
                 </ul>

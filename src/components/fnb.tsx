@@ -7,7 +7,7 @@ const FNB: React.FC = () => {
   return (
     <div className={styles.fnb}>
       <div className={styles.links}>
-        <Link href="https://nextomo.vercel.app/">NEXTNOVA</Link>
+        <Link href="https://nextomo.vercel.app/">NEXTOMO</Link>
         <Link href="/">개인정보처리방침</Link>
         <Link href="/">이용약관</Link>
       </div>
