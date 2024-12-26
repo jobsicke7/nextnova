@@ -22,7 +22,7 @@ const GNB: React.FC = () => {
                     <Link href="/notice">Notice</Link>
                 </li>
                 <li className={styles.link}>
-                    <Link href="/contact">Contact</Link>
+                    <Link href="/edit">Contact</Link>
                 </li>
 
                 <Image
