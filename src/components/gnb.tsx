@@ -7,7 +7,7 @@ const GNB: React.FC = () => {
     return (
         <div className={styles.gnb}>
             <div className={styles.logo}>
-                <Link href="/">잡식이라네</Link>
+                <Link href="/">NEXTNOVA</Link>
             </div>
             <ul className={styles.menu}>
                 <li>
