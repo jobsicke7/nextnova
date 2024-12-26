@@ -42,16 +42,16 @@ export default function AnnouncementForm() {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to post announcement");
+                throw new Error("공지 작성 실패..");
             }
 
             await fetchAnnouncements(); // 게시글 목록 업데이트
-            setStatusMessage("Announcement added successfully!"); // 성공 메시지
+            setStatusMessage("공지 작성 완료!"); // 성공 메시지
             setTitle(""); // 입력 필드 초기화
             setDescription("");
         } catch (error) {
             console.error("Error:", error);
-            setStatusMessage("Failed to add announcement."); // 실패 메시지
+            setStatusMessage("공지 작성 실패.."); // 실패 메시지
         } finally {
             setTimeout(() => setStatusMessage(""), 3000); // 3초 후 상태 메시지 제거
         }
@@ -65,14 +65,14 @@ export default function AnnouncementForm() {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to delete announcement");
+                throw new Error("F공지 삭제 실패..");
             }
 
             await fetchAnnouncements(); // 게시글 목록 업데이트
-            setStatusMessage("Announcement deleted successfully!");
+            setStatusMessage("공지 삭제 완료!");
         } catch (error) {
             console.error("Error deleting announcement:", error);
-            setStatusMessage("Failed to delete announcement.");
+            setStatusMessage("공지 삭제 실패..");
         } finally {
             setTimeout(() => setStatusMessage(""), 3000); // 3초 후 상태 메시지 제거
         }
@@ -86,14 +86,14 @@ export default function AnnouncementForm() {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Enter title"
+                    placeholder="공지 제목을 작성하세요"
                     required
                     style={{ display: "block", margin: "10px 0", padding: "8px", width: "100%" }}
                 />
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Enter description"
+                    placeholder="설명을 작성하세요"
                     required
                     style={{ display: "block", margin: "10px 0", padding: "8px", width: "100%", height: "100px" }}
                 />
