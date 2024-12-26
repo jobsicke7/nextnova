@@ -3,8 +3,11 @@ import GNB from "@/components/gnb";
 import type { Metadata } from "next";
 import "@/styles/global.css";
 export const metadata: Metadata = {
-  title: "잡식이라네",
+  title: "NEXTNOVA",
   description: "공부용 사이트",
+  icons: {
+    icon: "./favicon/favicon.ico",
+  },
 };
 
 export default function RootLayout({
