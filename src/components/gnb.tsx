@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import styles from "../styles/gnb.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import SNB from "@/components/snb"
+import SNB from "./snb"
 
 const GNB: React.FC = () => {
     const [isSnbOpen, setIsSnbOpen] = useState(false);
