@@ -53,24 +53,29 @@ export default function ChatPage() {
 
     return (
         <div className="chat-container">
-            <div className="messages">
-                {messages.map((msg, index) => (
-                    <div key={index} className="message">
-                        <strong>{msg.userId}</strong>
-                        <p>{msg.message}</p>
-                        <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
+            {status === "loading" && <p>로딩 중...</p>}
+            {status === "authenticated" && (
+                <>
+                    <div className="messages">
+                        {messages.map((msg, index) => (
+                            <div key={index} className="message">
+                                <strong>{msg.userId}</strong>
+                                <p>{msg.message}</p>
+                                <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            <div className="input-bar">
-                <input
-                    type="text"
-                    placeholder="메시지를 입력하세요..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                />
-                <button onClick={handleSendMessage}>전송</button>
-            </div>
+                    <div className="input-bar">
+                        <input
+                            type="text"
+                            placeholder="메시지를 입력하세요..."
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                        />
+                        <button onClick={handleSendMessage}>전송</button>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
