@@ -23,7 +23,7 @@ const SNB = ({ isOpen, onClose }: SNBProps) => {
             {/* Side Navigation */}
             <div className={`${styles.sidenav} ${isOpen ? styles.open : ''}`}>
                 <div className={styles.header}>
-                    <h2 className={styles.title}>메1뉴</h2>
+                    <h2 className={styles.title}>메뉴</h2>
                     <button
                         onClick={onClose}
                         className={styles.closeButton}
