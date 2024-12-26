@@ -1,83 +1,96 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
-
-export const dynamic = "force-dynamic"; // 동적 렌더링 강제
+import { signOut, useSession } from "next-auth/react";
+import styles from "./Chat.module.css";
 
 interface Message {
+    _id: string;
     userId: string;
+    nickname: string;
     message: string;
     timestamp: string;
 }
 
 export default function ChatPage() {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const [messages, setMessages] = useState<Message[]>([]);
-    const [newMessage, setNewMessage] = useState("");
+    const [input, setInput] = useState("");
 
     useEffect(() => {
-        if (status === "unauthenticated") {
-            signIn(); // 로그인 페이지로 리다이렉트
-        }
-
-        async function fetchMessages() {
-            const response = await fetch("/api/chat");
-            const data = await response.json();
-            setMessages(data);
+        if (!session) {
+            window.location.href = "/api/auth/signin";
         }
 
         fetchMessages();
+    }, [session]);
 
-        // 주기적으로 메시지 가져오기
-        const interval = setInterval(fetchMessages, 5000);
-        return () => clearInterval(interval);
-    }, [status]);
+    const fetchMessages = async () => {
+        try {
+            const res = await fetch("/api/messages");
+            const data = await res.json();
+            setMessages(data);
+        } catch (error) {
+            console.error("Failed to fetch messages:", error);
+        }
+    };
 
-    const handleSendMessage = async () => {
-        if (!newMessage.trim()) return;
+    const sendMessage = async () => {
+        if (!input.trim()) return;
 
-        const response = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                userId: session?.user?.email || "Unknown User",
-                message: newMessage,
-            }),
-        });
+        try {
+            const res = await fetch("/api/messages", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: session?.user?.email,
+                    nickname: session?.user?.name,
+                    message: input,
+                }),
+            });
 
-        if (response.ok) {
-            setNewMessage(""); // 입력창 초기화
-            const data = await response.json();
-            console.log("Message sent:", data);
+            if (res.ok) {
+                fetchMessages(); // 메시지 목록 다시 가져오기
+                setInput(""); // 입력 필드 초기화
+            }
+        } catch (error) {
+            console.error("Failed to send message:", error);
         }
     };
 
     return (
-        <div className="chat-container">
-            {status === "loading" && <p>로딩 중...</p>}
-            {status === "authenticated" && (
-                <>
-                    <div className="messages">
-                        {messages.map((msg, index) => (
-                            <div key={index} className="message">
-                                <strong>{msg.userId}</strong>
-                                <p>{msg.message}</p>
-                                <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
-                            </div>
-                        ))}
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1>채팅</h1>
+                <button onClick={() => signOut()} className={styles.signOutButton}>
+                    로그아웃
+                </button>
+            </div>
+
+            <div className={styles.chatBox}>
+                {messages.map((msg) => (
+                    <div key={msg._id} className={styles.message}>
+                        <span className={styles.nickname}>{msg.nickname}:</span>
+                        <span className={styles.text}>{msg.message}</span>
+                        <span className={styles.timestamp}>
+                            {new Date(msg.timestamp).toLocaleTimeString()}
+                        </span>
                     </div>
-                    <div className="input-bar">
-                        <input
-                            type="text"
-                            placeholder="메시지를 입력하세요..."
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                        />
-                        <button onClick={handleSendMessage}>전송</button>
-                    </div>
-                </>
-            )}
+                ))}
+            </div>
+
+            <div className={styles.inputBox}>
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    className={styles.input}
+                    placeholder="메시지를 입력하세요"
+                />
+                <button onClick={sendMessage} className={styles.sendButton}>
+                    전송
+                </button>
+            </div>
         </div>
     );
 }
