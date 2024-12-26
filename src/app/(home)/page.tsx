@@ -1,8 +1,12 @@
 
+import styles from '@/styles/main.module.css';
+
 export default function Home() {
   return (
-    <h1>
-      welcome!
-    </h1>
+    <div className={styles.container}>
+      <h1>
+        welcome!
+      </h1>
+    </div>
   );
 }
