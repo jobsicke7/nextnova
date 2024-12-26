@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 
+export const dynamic = "force-dynamic"; // 동적 렌더링 강제
+
 interface Message {
     userId: string;
     message: string;
