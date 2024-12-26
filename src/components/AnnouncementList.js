@@ -25,9 +25,9 @@ export default function AnnouncementList() {
 
     return (
         <div>
-            <h1>공지사항</h1>
+            <h1 style={{ margin: "30px 10px" }}>공지사항</h1>
             {announcements.length === 0 ? (
-                <p>등록된 공지사항이 없습니다.</p>
+                <p style={{ margin: "30px 10px" }}>등록된 공지사항이 없습니다.</p>
             ) : (
                 announcements.map((announcement, index) => (
                     <div
@@ -35,7 +35,7 @@ export default function AnnouncementList() {
                         style={{
                             border: "1px solid #ccc",
                             borderRadius: "5px",
-                            margin: "10px 0",
+                            margin: "30px 10px",
                             padding: "10px",
                             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                         }}

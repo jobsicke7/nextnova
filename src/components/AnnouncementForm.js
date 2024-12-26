@@ -79,7 +79,7 @@ export default function AnnouncementForm() {
     };
 
     return (
-        <div>
+        <div style={{ margin: "30px 10px" }}>
             <h1>공지 작성</h1>
             <form onSubmit={handleSubmit}>
                 <input
