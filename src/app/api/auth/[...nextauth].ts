@@ -11,27 +11,32 @@ const handler = NextAuth({
     ],
     callbacks: {
         async signIn({ account, profile }) {
-            if (account?.provider === "naver" && profile?.response) {
-                const userData = {
-                    id: profile.response.id,
-                    nickname: profile.response.nickname,
-                    email: profile.response.email,
-                };
+            try {
+                if (account?.provider === "naver" && profile?.response) {
+                    const userData = {
+                        id: profile.response.id,
+                        nickname: profile.response.nickname,
+                        email: profile.response.email,
+                    };
 
-                const client = await clientPromise;
-                const db = client.db("your_database_name");
-                const usersCollection = db.collection("users");
+                    const client = await clientPromise;
+                    const db = client.db("your_database_name");
+                    const usersCollection = db.collection("users");
 
-                const existingUser = await usersCollection.findOne({ id: userData.id });
+                    const existingUser = await usersCollection.findOne({ id: userData.id });
 
-                if (!existingUser) {
-                    await usersCollection.insertOne(userData);
+                    if (!existingUser) {
+                        await usersCollection.insertOne(userData);
+                    }
                 }
+                return true; // 인증 성공
+            } catch (error) {
+                console.error("SignIn Error:", error);
+                return false; // 인증 실패
             }
-            return true;
         },
-        async session({ session, token }) {
-            return session;
+        async redirect({ url, baseUrl }) {
+            return baseUrl;
         },
     },
     secret: process.env.NEXTAUTH_SECRET,
