@@ -33,3 +33,18 @@
 .menu li a:hover {
     color: #00bcd4;
 }
+
+.menuIcon {
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    .link {
+        display: none;
+
+    }
+
+    .menuIcon {
+        display: flex;
+    }
+}

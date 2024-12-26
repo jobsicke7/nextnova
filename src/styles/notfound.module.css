@@ -26,3 +26,23 @@
 .button:hover {
     background-color: #0058b6;
 }
+
+@media screen and (max-width: 1440px) {
+    .header .container .links {
+        display: none;
+    }
+
+    .header .container .innerwrapper {
+        gap: 158px;
+    }
+
+    .header .container .Headerlogo {
+        font-size: 0;
+        gap: 0;
+    }
+
+    .header .container .menu {
+        display: flex;
+        align-items: center;
+    }
+}
