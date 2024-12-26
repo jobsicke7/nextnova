@@ -24,10 +24,10 @@ export default function AnnouncementList() {
     }, []);
 
     return (
-        <div style={{ height: "69vh" }}>
-            <h1 style={{ margin: "30px 10px" }}>공지사항</h1>
+        <div style={{ minHeight: "71vh", maxWidth: "100%" }}>
+            <h1 style={{ margin: "3vh 10px" }}>공지사항</h1>
             {announcements.length === 0 ? (
-                <p style={{ margin: "30px 10px" }}>등록된 공지사항이 없습니다.</p>
+                <p style={{ margin: "0 10px" }}>등록된 공지사항이 없습니다.</p>
             ) : (
                 announcements.map((announcement, index) => (
                     <div
@@ -35,7 +35,7 @@ export default function AnnouncementList() {
                         style={{
                             border: "1px solid #ccc",
                             borderRadius: "5px",
-                            margin: "30px 10px",
+                            margin: "20px 10px",
                             padding: "10px",
                             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                         }}

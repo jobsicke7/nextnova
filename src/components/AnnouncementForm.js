@@ -79,7 +79,7 @@ export default function AnnouncementForm() {
     };
 
     return (
-        <div style={{ margin: "30px 10px" }}>
+        <div style={{ margin: "30px 10px", minHeight: "64.7vh", maxWidth: "100%" }}>
             <h1>공지 작성</h1>
             <form onSubmit={handleSubmit}>
                 <input
@@ -88,14 +88,14 @@ export default function AnnouncementForm() {
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="공지 제목을 작성하세요"
                     required
-                    style={{ display: "block", margin: "10px 0", padding: "8px", width: "100%" }}
+                    style={{ display: "block", margin: "10px 0", padding: "8px", width: "98%" }}
                 />
                 <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="설명을 작성하세요"
                     required
-                    style={{ display: "block", margin: "10px 0", padding: "8px", width: "100%", height: "100px" }}
+                    style={{ display: "block", margin: "10px 0", padding: "8px", width: "98%", height: "100px" }}
                 />
                 <button
                     type="submit"
