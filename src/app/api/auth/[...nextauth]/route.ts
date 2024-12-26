@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import NaverProvider from "next-auth/providers/naver";
-import clientPromise from "../../../../lib/mongodb";
+import clientPromise from "../../../../../lib/mongodb";
 
 const handler = NextAuth({
     providers: [
