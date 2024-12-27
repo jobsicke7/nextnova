@@ -77,7 +77,7 @@ const Page = async () => {
                                 <>
                                     <p>다음 방송: {member.next_streaming.status}</p>
                                     <p>
-                                        정보:{" "}
+                                        {" "}
                                         <span
                                             dangerouslySetInnerHTML={{
                                                 __html: parseTextWithLinks(cleanInfoText(member.next_streaming.info || "")),
@@ -86,7 +86,7 @@ const Page = async () => {
                                     </p>
                                 </>
                             ) : (
-                                <p>다음 방송 관련 없음</p>
+                                <p>비정기 방송</p>
                             )}
                         </div>
 

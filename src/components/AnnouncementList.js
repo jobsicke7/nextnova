@@ -24,7 +24,7 @@ export default function AnnouncementList() {
     }, []);
 
     return (
-        <div style={{ minHeight: "73vh", maxWidth: "100%" }}>
+        <div style={{ minHeight: "73.3vh", maxWidth: "100%" }}>
             <h1 style={{ margin: "3vh 10px" }}>공지사항</h1>
             {announcements.length === 0 ? (
                 <p style={{ margin: "0 10px" }}>등록된 공지사항이 없습니다.</p>

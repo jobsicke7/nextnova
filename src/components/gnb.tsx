@@ -38,9 +38,11 @@ const GNB: React.FC = () => {
                         <Link href="/notice">Notice</Link>
                     </li>
                     <li className={styles.link}>
-                        <Link href="/edit">Contact</Link>
+                        <Link href="/contact">Contact</Link>
                     </li>
-
+                    <li className={styles.link}>
+                        <Link href="/more">More</Link>
+                    </li>
                     <Image
                         src="/icons/menu.svg"
                         alt="menu icon"

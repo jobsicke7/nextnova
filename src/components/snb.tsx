@@ -35,7 +35,7 @@ const SNB = ({ isOpen, onClose }: SNBProps) => {
                 <nav className={styles.nav}>
                     <Link href="/" className={styles.navItem}>About</Link>
                     <Link href="/notice" className={styles.navItem}>Notice</Link>
-                    <Link href="/edit" className={styles.navItem}>Contact</Link>
+                    <Link href="/contact" className={styles.navItem}>Contact</Link>
                 </nav>
             </div>
         </>
