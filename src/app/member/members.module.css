@@ -1,0 +1,53 @@
+.container {
+    padding: 20px;
+
+}
+
+.membersList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.memberCard {
+    width: 200px;
+    padding: 20px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+    border: 1px solid #f9f9f9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.streamInfo {
+    margin-bottom: 20px;
+}
+
+.snsLinks {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.platformLogo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.streamingInfo {
+    margin-top: 20px;
+}
+
+.stream {
+    margin-bottom: 10px;
+}
