@@ -36,7 +36,7 @@ export default function ChatComponent({ initialMessages }: ChatProps) {
             userId: session.user.email,
             naverId: session.user.email,
             message: newMessage.trim(),
-            createdAt: new Date(),
+            createdAt: '2024.1.1',
         };
 
         try {
