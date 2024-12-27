@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
-import styles from "./Chat.module.css";
+import styles from "./chat.module.css";
 
 interface Message {
     _id: string;
