@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
-import styles from '@/styles/Chat.module.css';
+import styles from '@/styles/chat.module.css';
 import { ChatMessage, ChatProps } from '../../../types/chat';
 
 export default function ChatComponent({ initialMessages }: ChatProps) {
