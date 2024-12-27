@@ -1,13 +1,9 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import dynamic from "next/dynamic";
 import clientPromise from "../../../lib/mongodb";
 import { ChatMessage } from "../../../types/chat";
 import { WithId, Document } from 'mongodb';
-
-const ChatComponent = dynamic(() => import("./ChatComponent"), {
-  ssr: false
-});
+import ClientWrapper from './ClientWrapper';
 
 export default async function ChatPage() {
   const session = await getServerSession();
@@ -26,7 +22,6 @@ export default async function ChatPage() {
     .limit(50)
     .toArray();
 
-  // MongoDB 문서를 ChatMessage 형식으로 변환
   const formattedMessages: ChatMessage[] = messages.map((msg: WithId<Document>) => ({
     id: msg._id.toString(),
     userId: msg.userId as string,
@@ -35,5 +30,5 @@ export default async function ChatPage() {
     createdAt: msg.createdAt as Date
   }));
 
-  return <ChatComponent initialMessages={formattedMessages} />;
+  return <ClientWrapper initialMessages={formattedMessages} />;
 }
