@@ -1,0 +1,29 @@
+name: Vercel 배포 알림을 Discord로 전송
+
+on:
+  deployment_status:
+
+jobs:
+  notify-discord:
+    name: 배포 상태를 Discord로 알림
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success'  github.event.deployment_status.state == 'failure'
+
+    steps:
+      
+name: Discord로 알림 전송
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      run: |
+        STATUS="${{ github.event.deployment_status.state }}"
+        ENVIRONMENT="${{ github.event.deployment.environment }}"
+        URL="https://www.jobsicke.xyz/"
+        TIMESTAMP=$(TZ='Asia/Seoul' date +"%Y-%m-%d %H:%M:%S")
+        ACTOR="잡식이라네"
+        EMBED_COLOR=$([ "$STATUS" == "success" ] && echo "3066993" 
+ echo "15158332")
+          TITLE=$([ "$STATUS" == "success" ] && echo "✅ 배포 성공" || echo "❌ 배포 실패")
+          THUMBNAIL_URL="https://assets.vercel.com/image/upload/q_auto/front/favicon/vercel/apple-touch-icon-256x256.png"
+          curl -H "Content-Type: application/json" \
+               -d "{"content": "$MESSAGE", "embeds": [{"title": "$TITLE", "description": "환경: $ENVIRONMENT\nURL: [여기를 클릭하세요]($URL)\n배포자: $ACTOR\n배포 시간: $TIMESTAMP", "color": $EMBED_COLOR, "thumbnail": {"url": "$THUMBNAIL_URL"}}]}" \
+               $DISCORD_WEBHOOK_URL
