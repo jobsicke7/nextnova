@@ -1,5 +1,5 @@
 
-import styles from '@/styles/main.modudle.css';
+import styles from '@/styles/main.module.css';
 
 export default function Home() {
   return (
