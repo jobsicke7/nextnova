@@ -1,5 +1,3 @@
-// app/contact/page.tsx
-
 import React from "react";
 import styles from "./contact.module.css";
 

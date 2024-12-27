@@ -1,7 +1,6 @@
 import Image from "next/image";
 import styles from "./members.module.css";
 
-// 플랫폼 로고 URL 설정
 const platformLogos = {
     Afreeca: "/images/afreeca-logo.svg",
     Youtube: "/images/youtube-logo.svg",
@@ -32,7 +31,6 @@ interface Member {
     }[];
 }
 
-// 텍스트에서 마크다운 링크를 HTML 링크로 변환하는 함수
 const parseTextWithLinks = (text: string) => {
     const regex = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
     return text.replace(regex, (match, p1, p2) => {
@@ -40,7 +38,6 @@ const parseTextWithLinks = (text: string) => {
     });
 };
 
-// Info 부분에서 - 시작하는 텍스트를 제거하는 함수
 const cleanInfoText = (info: string) => {
     return info.startsWith("-") ? info.slice(1).trim() : info;
 };
@@ -64,7 +61,6 @@ const Page = async () => {
             <div className={styles.membersList}>
                 {members.map((member) => (
                     <div key={member.member_id} className={styles.memberCard}>
-                        {/* avatar_url이 없으면 none.png로 대체 */}
                         <img
                             src={member.avatar_url || "/images/none.svg"}
                             alt={member.name}
@@ -92,7 +88,7 @@ const Page = async () => {
 
                         <div className={styles.snsLinks}>
                             {member.sns
-                                .filter((sns) => sns.platform !== "Wakzoo" && sns.platform !== "Twitch") // Wakzoo와 Twitch 제외
+                                .filter((sns) => sns.platform !== "Wakzoo" && sns.platform !== "Twitch")
                                 .map((sns) => (
                                     <div key={sns.platform} className={styles.snsItem}>
                                         {sns.platform in platformLogos && (
