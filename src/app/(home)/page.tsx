@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <h1>
-        welcome!
+        welcome! World!
       </h1>
     </div>
   );
