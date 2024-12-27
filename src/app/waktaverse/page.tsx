@@ -95,28 +95,14 @@ const Page = async () => {
                                 .filter((sns) => sns.platform !== "Wakzoo" && sns.platform !== "Twitch") // Wakzoo와 Twitch 제외
                                 .map((sns) => (
                                     <div key={sns.platform} className={styles.snsItem}>
-                                        {sns.platform === "Youtube" ? (
-                                            <a
-                                                href={`https://www.youtube.com/channel/${sns.sns_id}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <Image
-                                                    src={platformLogos[sns.platform]}
-                                                    alt={sns.platform}
-                                                    width={5}
-                                                    height={5}
-                                                    className={styles.platformLogo}
-                                                />
-                                            </a>
-                                        ) : (
+                                        {sns.platform in platformLogos && (
                                             <a
                                                 href={`https://www.${sns.platform.toLowerCase()}.com/${sns.sns_id}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
                                                 <Image
-                                                    src={platformLogos[sns.platform]}
+                                                    src={platformLogos[sns.platform as keyof typeof platformLogos]}
                                                     alt={sns.platform}
                                                     width={5}
                                                     height={5}
