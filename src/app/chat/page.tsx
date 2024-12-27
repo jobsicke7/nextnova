@@ -1,8 +1,8 @@
-"use client";
+"use client"; // 페이지 전체를 클라이언트 컴포넌트로 선언
 
 import { useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
-import styles from "./chat.module.css";
+import styles from "./Chat.module.css";
 
 interface Message {
     _id: string;
@@ -13,17 +13,19 @@ interface Message {
 }
 
 export default function ChatPage() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
 
     useEffect(() => {
-        if (!session) {
-            window.location.href = "/api/auth/signin";
+        if (status === "unauthenticated") {
+            window.location.href = "/api/auth/signin"; // 인증되지 않은 경우 로그인 페이지로 리다이렉트
         }
 
-        fetchMessages();
-    }, [session]);
+        if (status === "authenticated") {
+            fetchMessages();
+        }
+    }, [status]);
 
     const fetchMessages = async () => {
         try {
@@ -57,6 +59,10 @@ export default function ChatPage() {
             console.error("Failed to send message:", error);
         }
     };
+
+    if (status === "loading") {
+        return <div>로딩 중...</div>; // 세션 로드 중 표시
+    }
 
     return (
         <div className={styles.container}>
