@@ -1,6 +1,7 @@
 import FNB from "@/components/fnb";
 import GNB from "@/components/gnb";
 import type { Metadata } from "next";
+import { Providers } from "./providers";
 import "@/styles/global.css";
 export const metadata: Metadata = {
   title: "NEXTNOVA",
@@ -21,7 +22,7 @@ export default function RootLayout({
     >
       <body>
         <GNB />
-        {children}
+        <Providers>{children}</Providers>
         <FNB />
       </body>
     </html>

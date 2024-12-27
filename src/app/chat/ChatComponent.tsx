@@ -6,10 +6,20 @@ import styles from '../chat/chat.module.css';
 import { ChatMessage, ChatProps } from '../../../types/chat';
 
 export default function ChatComponent({ initialMessages }: ChatProps) {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
+
+    // 로딩 상태 처리
+    if (status === "loading") {
+        return <div>Loading...</div>;
+    }
+
+    // 인증되지 않은 상태 처리
+    if (status === "unauthenticated") {
+        return <div>Please sign in to access the chat.</div>;
+    }
 
     const formatDate = (date: Date) => {
         return new Intl.DateTimeFormat('ko-KR', {
@@ -23,7 +33,7 @@ export default function ChatComponent({ initialMessages }: ChatProps) {
         if (!newMessage.trim() || !session?.user?.email) return;
 
         const messageData = {
-            userId: session.user.email, // email을 userId로 사용
+            userId: session.user.email,
             naverId: session.user.email,
             message: newMessage.trim(),
             createdAt: new Date(),
@@ -51,9 +61,14 @@ export default function ChatComponent({ initialMessages }: ChatProps) {
 
     useEffect(() => {
         const interval = setInterval(async () => {
-            const response = await fetch('/api/messages');
-            const newMessages = await response.json();
-            setMessages(newMessages);
+            try {
+                const response = await fetch('/api/messages');
+                if (!response.ok) throw new Error('Failed to fetch messages');
+                const newMessages = await response.json();
+                setMessages(newMessages);
+            } catch (error) {
+                console.error('메시지 업데이트 실패:', error);
+            }
         }, 5000);
 
         return () => clearInterval(interval);
