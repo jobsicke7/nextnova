@@ -1,79 +1,70 @@
 .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-    background-color: #f9f9f9;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #03c75a;
-    color: white;
-}
-
-.signOutButton {
-    background-color: #ffffff;
-    color: #03c75a;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.chatBox {
-    flex: 1;
+.messagesContainer {
+    flex-grow: 1;
     overflow-y: auto;
-    padding: 10px;
     display: flex;
     flex-direction: column-reverse;
-    /* 최신 메시지가 아래에서 위로 */
+    gap: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
-.message {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin: 5px 0;
+.messageBox {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 80%;
 }
 
-.nickname {
-    font-weight: bold;
-    margin-right: 10px;
+.myMessage {
+    background-color: #0078ff;
+    color: white;
+    align-self: flex-end;
 }
 
-.text {
-    flex: 1;
-}
-
-.timestamp {
+.messageInfo {
     font-size: 0.8rem;
-    color: gray;
+    color: #666;
+    margin-bottom: 5px;
 }
 
-.inputBox {
+.myMessage .messageInfo {
+    color: #e0e0e0;
+}
+
+.inputContainer {
     display: flex;
-    padding: 10px;
-    border-top: 1px solid #ddd;
+    gap: 10px;
+    padding: 20px;
     background-color: white;
+    border-top: 1px solid #eee;
 }
 
 .input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    flex-grow: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
 }
 
 .sendButton {
-    margin-left: 10px;
-    padding: 10px 20px;
-    background-color: #03c75a;
+    padding: 12px 24px;
+    background-color: #0078ff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
+}
+
+.sendButton:hover {
+    background-color: #0056b3;
 }

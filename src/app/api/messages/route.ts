@@ -1,52 +1,56 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "../../../../lib/mongodb";
+import { getServerSession } from "next-auth";
+import { ObjectId } from "mongodb";
 
-// 메시지 가져오기
 export async function GET() {
     try {
         const client = await clientPromise;
-        const db = client.db("your_database_name");
-        const messagesCollection = db.collection("messages");
+        const db = client.db("chatDB");
 
-        // 최신순 메시지 반환
-        const messages = await messagesCollection
+        const messages = await db
+            .collection("messages")
             .find({})
-            .sort({ timestamp: -1 }) // 최신순 정렬
+            .sort({ createdAt: -1 })
+            .limit(50)
             .toArray();
 
         return NextResponse.json(messages);
     } catch (error) {
-        console.error("Error fetching messages:", error);
-        return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
+        return NextResponse.json(
+            { error: "메시지를 불러오는데 실패했습니다." },
+            { status: 500 }
+        );
     }
 }
 
-// 메시지 저장하기
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
     try {
-        const body = await request.json();
-        const { userId, message, nickname } = body;
-
-        if (!userId || !message || !nickname) {
-            return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+        const session = await getServerSession();
+        if (!session?.user) {
+            return NextResponse.json(
+                { error: "인증되지 않은 사용자입니다." },
+                { status: 401 }
+            );
         }
 
         const client = await clientPromise;
-        const db = client.db("your_database_name");
-        const messagesCollection = db.collection("messages");
+        const db = client.db("chatDB");
 
-        const newMessage = {
-            userId,
-            message,
-            nickname,
-            timestamp: new Date(),
+        const data = await req.json();
+        const messageData = {
+            ...data,
+            _id: new ObjectId(),
+            createdAt: new Date(),
         };
 
-        await messagesCollection.insertOne(newMessage);
+        await db.collection("messages").insertOne(messageData);
 
-        return NextResponse.json({ success: true, message: newMessage });
+        return NextResponse.json(messageData);
     } catch (error) {
-        console.error("Error saving message:", error);
-        return NextResponse.json({ error: "Failed to save message" }, { status: 500 });
+        return NextResponse.json(
+            { error: "메시지 저장에 실패했습니다." },
+            { status: 500 }
+        );
     }
 }

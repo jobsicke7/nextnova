@@ -1,102 +1,97 @@
-"use client"; // 페이지 전체를 클라이언트 컴포넌트로 선언
-
-import { useState, useEffect } from "react";
-import { signOut, useSession } from "next-auth/react";
-import styles from "./chat.module.css";
+import { GetServerSideProps } from 'next';
+import { useState, useEffect } from 'react';
+import { MongoClient } from 'mongodb';
+import { getSession } from 'next-auth/react';
+import styles from './chat.module.css';
 
 interface Message {
-    _id: string;
-    userId: string;
-    nickname: string;
-    message: string;
+    naverId: string;
+    content: string;
     timestamp: string;
 }
 
-export default function ChatPage() {
-    const { data: session, status } = useSession();
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [input, setInput] = useState("");
+const ChatPage = ({ messages }: { messages: Message[] }) => {
+    const [message, setMessage] = useState('');
+    const [chatMessages, setChatMessages] = useState<Message[]>(messages);
 
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            window.location.href = "/api/auth/signin"; // 인증되지 않은 경우 로그인 페이지로 리다이렉트
-        }
-
-        if (status === "authenticated") {
-            fetchMessages();
-        }
-    }, [status]);
-
-    const fetchMessages = async () => {
-        try {
-            const res = await fetch("/api/messages");
-            const data = await res.json();
-            setMessages(data);
-        } catch (error) {
-            console.error("Failed to fetch messages:", error);
-        }
+    const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMessage(e.target.value);
     };
 
-    const sendMessage = async () => {
-        if (!input.trim()) return;
+    const handleSendMessage = async () => {
+        const res = await fetch('/api/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message }),
+        });
 
-        try {
-            const res = await fetch("/api/messages", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: session?.user?.email,
-                    nickname: session?.user?.name,
-                    message: input,
-                }),
-            });
-
-            if (res.ok) {
-                fetchMessages(); // 메시지 목록 다시 가져오기
-                setInput(""); // 입력 필드 초기화
-            }
-        } catch (error) {
-            console.error("Failed to send message:", error);
+        if (res.ok) {
+            const newMessage = await res.json();
+            setChatMessages([newMessage, ...chatMessages]);
+            setMessage('');
         }
     };
-
-    if (status === "loading") {
-        return <div>로딩 중...</div>; // 세션 로드 중 표시
-    }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <h1>채팅</h1>
-                <button onClick={() => signOut()} className={styles.signOutButton}>
-                    로그아웃
-                </button>
-            </div>
-
+        <div className={styles.chatContainer}>
             <div className={styles.chatBox}>
-                {messages.map((msg) => (
-                    <div key={msg._id} className={styles.message}>
-                        <span className={styles.nickname}>{msg.nickname}:</span>
-                        <span className={styles.text}>{msg.message}</span>
-                        <span className={styles.timestamp}>
-                            {new Date(msg.timestamp).toLocaleTimeString()}
-                        </span>
+                {chatMessages.map((msg, index) => (
+                    <div key={index} className={styles.message}>
+                        <span className={styles.naverId}>{msg.naverId}</span>
+                        <span className={styles.timestamp}>{msg.timestamp}</span>
+                        <p>{msg.content}</p>
                     </div>
                 ))}
             </div>
-
-            <div className={styles.inputBox}>
+            <div className={styles.inputContainer}>
                 <input
                     type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    value={message}
+                    onChange={handleMessageChange}
                     className={styles.input}
-                    placeholder="메시지를 입력하세요"
                 />
-                <button onClick={sendMessage} className={styles.sendButton}>
-                    전송
+                <button onClick={handleSendMessage} className={styles.sendButton}>
+                    Send
                 </button>
             </div>
         </div>
     );
-}
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession({ req: context.req });
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
+
+    const client = await MongoClient.connect(process.env.MONGODB_URI!);
+    const db = client.db();
+    const collection = db.collection('messages');
+    const messages = await collection
+        .find()
+        .sort({ timestamp: -1 })
+        .limit(20)
+        .toArray();
+
+    client.close();
+
+    return {
+        props: {
+            messages: messages.map((msg: any) => ({
+                naverId: msg.naverId,
+                content: msg.content,
+                timestamp: msg.timestamp,
+            })),
+        },
+    };
+};
+
+export default ChatPage;
