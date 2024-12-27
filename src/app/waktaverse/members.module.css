@@ -1,22 +1,27 @@
 .container {
     padding: 20px;
-
 }
 
 .membersList {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: auto;
 }
 
 .memberCard {
     width: 250px;
     padding: 20px;
+    height: 300px;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
     border: 1px solid #f9f9f9;
     border-radius: 8px;
     background-color: #ffffff;
     text-align: center;
+
 }
 
 .avatar {
