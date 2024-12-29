@@ -1,5 +1,9 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./members.module.css";
+import { RefreshCw } from "lucide-react";
 
 const platformLogos = {
     Afreeca: "/images/afreeca-logo.svg",
@@ -42,22 +46,52 @@ const cleanInfoText = (info: string) => {
     return info.startsWith("-") ? info.slice(1).trim() : info;
 };
 
-const fetchMembers = async () => {
-    const res = await fetch("https://api.wakscord.com/v2/member/list", {
-        headers: {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",
-        },
-    });
+const MembersPage = () => {
+    const [members, setMembers] = useState<Member[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const data = await res.json();
-    return data.members;
-};
+    const fetchMembers = useCallback(async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const res = await fetch('/api/members');
+            if (!res.ok) {
+                throw new Error('Failed to fetch members');
+            }
+            const data = await res.json();
+            setMembers(data.members);
+        } catch (error) {
+            console.error('Error:', error);
+            setError('Failed to load members data');
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
-const Page = async () => {
-    const members: Member[] = await fetchMembers();
+    useEffect(() => {
+        fetchMembers();
+    }, [fetchMembers]);
 
     return (
         <div className={styles.container}>
+            <div className={styles.header}>
+                <button
+                    onClick={fetchMembers}
+                    disabled={isLoading}
+                    className={styles.refreshButton}
+                >
+                    <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
+                    <span>새로고침</span>
+                </button>
+            </div>
+
+            {error && (
+                <div className="text-center text-red-500 mb-4">
+                    {error}
+                </div>
+            )}
+
             <div className={styles.membersList}>
                 {members.map((member) => (
                     <div key={member.member_id} className={styles.memberCard}>
@@ -73,7 +107,6 @@ const Page = async () => {
                                 <>
                                     <p>다음 방송: {member.next_streaming.status}</p>
                                     <p>
-                                        {" "}
                                         <span
                                             dangerouslySetInnerHTML={{
                                                 __html: parseTextWithLinks(cleanInfoText(member.next_streaming.info || "")),
@@ -89,8 +122,8 @@ const Page = async () => {
                         <div className={styles.snsLinks}>
                             {member.sns
                                 .filter((sns) => sns.platform !== "Wakzoo" && sns.platform !== "Twitch")
-                                .map((sns) => (
-                                    <div key={sns.platform} className={styles.snsItem}>
+                                .map((sns, index) => (
+                                    <div key={`${member.member_id}-${sns.platform}-${sns.sns_id}-${index}`}>
                                         {sns.platform in platformLogos && (
                                             <a
                                                 href={`https://www.${sns.platform.toLowerCase()}.com/${sns.sns_id}`}
@@ -100,8 +133,8 @@ const Page = async () => {
                                                 <Image
                                                     src={platformLogos[sns.platform as keyof typeof platformLogos]}
                                                     alt={sns.platform}
-                                                    width={5}
-                                                    height={5}
+                                                    width={20}
+                                                    height={20}
                                                     className={styles.platformLogo}
                                                 />
                                             </a>
@@ -109,7 +142,6 @@ const Page = async () => {
                                     </div>
                                 ))}
                         </div>
-
                     </div>
                 ))}
             </div>
@@ -117,4 +149,4 @@ const Page = async () => {
     );
 };
 
-export default Page;
+export default MembersPage;
