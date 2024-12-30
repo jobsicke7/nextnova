@@ -15,8 +15,9 @@ type VideoData = {
     fetched_at: string;
 };
 
-async function getVideoData(): Promise<VideoData | null> {
-    const MONGO_URI = "mongodb+srv://admin:MnXr3KDSK8IeYrUd@nextnova.bxjnh.mongodb.net/?retryWrites=true&w=majority&appName=nextnova";
+const MONGO_URI = "mongodb+srv://admin:MnXr3KDSK8IeYrUd@nextnova.bxjnh.mongodb.net/?retryWrites=true&w=majority&appName=nextnova";
+
+async function fetchVideoData(): Promise<VideoData | null> {
     const client = new MongoClient(MONGO_URI);
 
     try {
@@ -30,8 +31,8 @@ async function getVideoData(): Promise<VideoData | null> {
     }
 }
 
-export default async function Home() {
-    const videoData = await getVideoData();
+export default async function VideoPage() {
+    const videoData = await fetchVideoData();
 
     if (!videoData) {
         return <div>No video data available.</div>;
@@ -70,8 +71,6 @@ export default async function Home() {
                             style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", borderRadius: "8px" }}
                         ></iframe>
                     </div>
-                    {/* <p>Upload Date: {new Date(videoData.upload_date).toLocaleString()}</p> */}
-
                     <br />
                     <br />
                     <div className={styles.info}>
