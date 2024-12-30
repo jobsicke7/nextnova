@@ -1,0 +1,92 @@
+.container {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px);
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    text-align: center;
+    font-size: 25px;
+    background-image: linear-gradient(to right, rgb(174, 0, 255), rgb(0, 55, 254));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.channelInfo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.channelIcon {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.thumbnail {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.title1 {
+    text-align: right;
+    position: relative;
+}
+
+.view {
+    margin-left: 8px;
+    color: red;
+}
+
+.like {
+    margin-left: 8px;
+    color: red;
+}
+
+.info1 {
+    font-size: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    text-align: center;
+    width: 30%;
+    margin: 0 auto;
+}
+
+.info {
+    font-size: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    text-align: center;
+    width: 30%;
+    margin: 0 auto;
+}
