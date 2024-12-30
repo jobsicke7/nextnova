@@ -102,7 +102,7 @@
     top: 10px;
     left: 10px;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: rgba(0, 86, 179, 0.3);
     color: white;
     border: none;
     border-radius: 4px;
@@ -111,5 +111,5 @@
 }
 
 .refreshButton:hover {
-    background-color: #0056b3;
+    background-color: rgba(0, 86, 179, 0.5);
 }
