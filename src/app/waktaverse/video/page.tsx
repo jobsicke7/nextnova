@@ -15,8 +15,10 @@ type VideoData = {
     fetched_at: string;
 };
 
-const MONGO_URI = "mongodb+srv://admin:MnXr3KDSK8IeYrUd@nextnova.bxjnh.mongodb.net/?retryWrites=true&w=majority&appName=nextnova";
+const MONGO_URI =
+    "mongodb+srv://admin:MnXr3KDSK8IeYrUd@nextnova.bxjnh.mongodb.net/?retryWrites=true&w=majority&appName=nextnova";
 
+// Fetch video data dynamically from MongoDB
 async function fetchVideoData(): Promise<VideoData | null> {
     const client = new MongoClient(MONGO_URI);
 
@@ -60,15 +62,29 @@ export default async function VideoPage() {
                 <br />
                 <br />
                 <div>
-                    {/* YouTube Embed 동영상 */}
-                    <div style={{ marginBottom: "20px", position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden" }}>
+                    <div
+                        style={{
+                            marginBottom: "20px",
+                            position: "relative",
+                            paddingBottom: "56.25%",
+                            height: 0,
+                            overflow: "hidden",
+                        }}
+                    >
                         <iframe
                             src={`https://www.youtube.com/embed/${videoData.video_id}`}
                             title={videoData.title}
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
-                            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", borderRadius: "8px" }}
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "8px",
+                            }}
                         ></iframe>
                     </div>
                     <br />
