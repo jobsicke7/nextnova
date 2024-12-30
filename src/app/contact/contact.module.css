@@ -3,12 +3,14 @@
 .contactContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    max-width: 1280px;
+    width: 100%;
+    min-height: 76.3vh;
     justify-content: center;
-    padding: 3rem;
-    background-color: #f7f7f7;
-    height: 65.5vh;
+    justify-self: center;
+    align-items: center;
     text-align: center;
+    background-color: f7f7f7;
 }
 
 .title {

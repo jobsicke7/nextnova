@@ -4,7 +4,7 @@ import style from "@/styles/main.module.css"
 
 const ContactPage = () => {
     return (
-        <div className={styles.container}>
+        <div className={styles.contactContainer} style={{}}>
             <div className={styles.contactContainer}>
                 <h1 className={styles.title}>Contact</h1>
                 <p className={styles.subtitle}>왁타버스 작업 환영합니다:)</p>
