@@ -7,23 +7,21 @@ declare global {
     var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-const uri = process.env.MONGODB_URI!;
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
 if (!process.env.MONGODB_URI) {
-    throw new Error("Please add your MongoDB URI to .env");
+    throw new Error('MONGODB_URI가 환경 변수에 설정되지 않았습니다.');
 }
 
-if (process.env.NODE_ENV === "development") {
-    // 개발 환경에서 MongoClient를 전역 변수로 설정
+const uri = process.env.MONGODB_URI;
+let client;
+let clientPromise: Promise<MongoClient>;
+
+if (process.env.NODE_ENV === 'development') {
     if (!global._mongoClientPromise) {
         client = new MongoClient(uri);
         global._mongoClientPromise = client.connect();
     }
     clientPromise = global._mongoClientPromise;
 } else {
-    // 프로덕션 환경에서는 새로 MongoClient 인스턴스를 생성
     client = new MongoClient(uri);
     clientPromise = client.connect();
 }
