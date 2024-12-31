@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth/mongodb-adapter": "^3.7.4",
     "@auth/prisma-adapter": "^2.7.4",
     "@prisma/client": "^6.1.0",
     "axios": "^1.7.9",
