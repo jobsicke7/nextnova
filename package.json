@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.7.4",
+    "@auth/prisma-adapter": "^2.7.4",
+    "@prisma/client": "^6.1.0",
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "dotenv": "^16.4.7",
@@ -17,6 +20,7 @@
     "mongodb": "^6.12.0",
     "next": "15.1.2",
     "next-auth": "^4.24.11",
+    "prisma": "^6.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^2.15.0"
@@ -26,5 +30,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "typescript": "5.7.2"
+  },
+  "prisma": {
+    "schema": "./prisma/schema.prisma"
   }
 }

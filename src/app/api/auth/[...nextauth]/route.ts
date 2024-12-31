@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
-import NaverProvider from "next-auth/providers/naver";
-import { MongoClient } from "mongodb";
+import NextAuth from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
+import NaverProvider from 'next-auth/providers/naver';
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
+import clientPromise from '@/lib/mongodb'; // MongoDB 연결 가져오기
 
-// MongoDB 연결 설정
-const clientPromise = new MongoClient(process.env.MONGODB_URI!).connect();
-
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
+    adapter: MongoDBAdapter(clientPromise),
     providers: [
         NaverProvider({
             clientId: process.env.NAVER_CLIENT_ID!,
@@ -13,39 +13,14 @@ const handler = NextAuth({
         }),
     ],
     callbacks: {
-        async signIn({ account, profile }) {
-            if (account?.provider === "naver" && profile?.response) {
-                const userData = {
-                    id: profile.response.id,
-                    nickname: profile.response.nickname,
-                    email: profile.response.email,
-                };
-
-                try {
-                    const client = await clientPromise;
-                    const db = client.db("your_database_name");
-                    const usersCollection = db.collection("users");
-
-                    // 기존 사용자 확인
-                    const existingUser = await usersCollection.findOne({ id: userData.id });
-
-                    if (!existingUser) {
-                        // 새 사용자 등록
-                        await usersCollection.insertOne(userData);
-                    }
-                } catch (error) {
-                    console.error("Database Error:", error);
-                    return false; // 인증 실패
-                }
+        session: async ({ session, user }: { session: any; user: any }) => {
+            if (session?.user) {
+                session.user.id = user.id;
             }
-            return true; // 인증 성공
-        },
-        async redirect({ url, baseUrl }) {
-            // 인증 후 기본 URL로 리다이렉션
-            return baseUrl;
+            return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
