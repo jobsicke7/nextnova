@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import type { NextAuthOptions } from 'next-auth';
 import NaverProvider from 'next-auth/providers/naver';
-import { MongoDBAdapter } from '../../../../../node_modules/@auth/mongodb-adapter'; // MongoDB Adapter 가져오기
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import clientPromise from '../../../../lib/mongodb'; // MongoDB 연결 가져오기
 
 export const authOptions: NextAuthOptions = {
