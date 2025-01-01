@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
     const pathname = req.nextUrl.pathname;
 
     if (pathname.startsWith("/dashboard")) {
-        if (token?.name !== "jobsicke") {
+        if (token?.name !== "jobsicke" && token?.name !== "admin") {
             const url = req.nextUrl.clone();
             url.pathname = "/unauthorized"; // 권한 없음 페이지로 이동
             return NextResponse.redirect(url);
