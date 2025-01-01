@@ -7,12 +7,13 @@
 }
 
 .loginBox {
-    width: 500px;
+    width: 80%;
+    max-width: 400px;
     min-height: 350px;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin-bottom: 20px;
 }
@@ -69,12 +70,13 @@
     margin-top: 20px;
     width: 100%;
     padding: 10px;
-    background-color: #208cff;
+    background-color: #0070f3;
     border: none;
     border-radius: 4px;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
 .loginButton:hover {
@@ -98,7 +100,7 @@
 
 .registerLink {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 .registerLink a {
