@@ -5,23 +5,28 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function DashboardPage() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
 
+    // 권한 확인 후 리다이렉트 처리
     useEffect(() => {
-        if (session?.user?.name !== "jobsicke" && session?.user?.name !== "admin") {
-            router.replace("/unauthorized");
+        if (status === "authenticated" && session?.user?.name !== "jobsicke") {
+            router.replace("/unauthorized"); // 권한 없음 페이지로 이동
         }
-    }, [session, router]);
+    }, [session, status, router]);
 
-    if (!session) {
-        return <p>Loading...</p>;
+    if (status === "loading") {
+        return <p>Loading...</p>; // 세션 로딩 중 표시
     }
 
-    return (
-        <div>
-            <h1>Dashboard</h1>
-            <p>환영합니다, {session.user.name}님!</p>
-        </div>
-    );
+    if (status === "authenticated" && session?.user?.name === "jobsicke") {
+        return (
+            <div>
+                <h1>Dashboard</h1>
+                <p>환영합니다, {session.user.name}님!</p>
+            </div>
+        );
+    }
+
+    return null; // 권한이 없을 경우 아무것도 렌더링하지 않음
 }
