@@ -1,12 +1,27 @@
-// app/dashboard/page.tsx
-import { redirect } from 'next/navigation';
+"use client";
 
-export default async function DashboardPage() {
-    // 여기까지 접근하면 이미 미들웨어를 통과한 상태
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+export default function DashboardPage() {
+    const { data: session } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (session?.user?.name !== "jobsicke" && session?.user?.name !== "admin") {
+            router.replace("/unauthorized");
+        }
+    }, [session, router]);
+
+    if (!session) {
+        return <p>Loading...</p>;
+    }
+
     return (
         <div>
             <h1>Dashboard</h1>
-            <p>Welcome to the dashboard!</p>
+            <p>환영합니다, {session.user.name}님!</p>
         </div>
     );
 }

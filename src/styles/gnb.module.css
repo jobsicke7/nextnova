@@ -32,6 +32,17 @@
     background-color: #008c9e;
 }
 
+/* 로그아웃 버튼 스타일 */
+.logoutButton {
+    background-color: #ff4d4d;
+    /* 빨간색 */
+}
+
+.logoutButton:hover {
+    background-color: #cc0000;
+    /* 더 어두운 빨간색 */
+}
+
 .logo a {
     text-decoration: none;
     font-size: 1.5rem;

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import style from '@/styles/main.module.css';
 import styles from './login.module.css';
 import { signIn, signOut, useSession } from 'next-auth/react';
-
 export default function LoginPage() {
     const { data: session } = useSession();
     const router = useRouter();
@@ -38,6 +37,8 @@ export default function LoginPage() {
         return (
             <div className={style.container}>
                 <p>환영합니다, {session.user?.name}님!</p>
+                <p>이메일: {session.user?.email}</p>
+                <p>ID: {session.user?.id}</p>
                 <img src={session.user?.image ?? ''} alt="프로필" style={{ width: 100 }} />
                 <button onClick={() => signOut()}>로그아웃</button>
             </div>

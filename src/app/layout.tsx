@@ -21,9 +21,7 @@ export default function RootLayout({
       lang='en'
     >
       <body>
-        <GNB />
-        <AuthProvider>{children}</AuthProvider>
-        <FNB />
+        <AuthProvider><GNB />{children}<FNB /></AuthProvider>
       </body>
     </html>
   );

@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import type { NextAuthOptions } from 'next-auth';
 import NaverProvider from 'next-auth/providers/naver';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { MongoDBAdapter } from '@auth/mongodb-adapter';
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import clientPromise from '@/lib/mongodb';
 import bcrypt from 'bcryptjs';
 
@@ -38,25 +38,45 @@ const authOptions: NextAuthOptions = {
                     throw new Error('Invalid password');
                 }
 
+                // MongoDB의 _id를 문자열로 변환
+                const userId = user._id.toString();
+
+                // 세션에 저장될 사용자 정보 반환
                 return {
-                    id: user._id.toString(),
+                    id: userId,
                     email: user.email,
-                    name: user.name
+                    name: user.name,
+                    // 추가하고 싶은 다른 사용자 정보
                 };
             }
         }),
     ],
     callbacks: {
-        session: async ({ session, user }: { session: any; user: any }) => {
+        jwt: async ({ token, user }) => {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+                token.name = user.name;
+                // 추가하고 싶은 다른 사용자 정보
+            }
+            return token;
+        },
+        session: async ({ session, token }) => {
             if (session?.user) {
-                session.user.id = user.id;
+                session.user.id = token.id as string;
+                session.user.email = token.email as string;
+                session.user.name = token.name as string;
+                // 추가하고 싶은 다른 사용자 정보
             }
             return session;
         },
     },
     pages: {
         signIn: '/login',
-        newUser: '/register', // signUp 대신 newUser 사용
+        newUser: '/register',
+    },
+    session: {
+        strategy: 'jwt',
     },
 };
 

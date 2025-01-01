@@ -1,16 +1,26 @@
 'use client';
 
 import React, { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import styles from "../styles/gnb.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import SNB from "./snb";
 
 const GNB: React.FC = () => {
+    const { data: session } = useSession(); // 로그인 세션 확인
     const [isSnbOpen, setIsSnbOpen] = useState(false);
 
     const handleClick = () => {
         setIsSnbOpen(true);
+    };
+
+    const handleAuth = () => {
+        if (session) {
+            signOut(); // 로그아웃 처리
+        } else {
+            signIn(); // 로그인 페이지로 이동
+        }
     };
 
     return (
@@ -40,8 +50,12 @@ const GNB: React.FC = () => {
                         <Link href="/contact">Contact</Link>
                     </li>
                     <li className={styles.link}>
-                        <button className={styles.loginButton}>
-                            <Link href="/login">로그인</Link>
+                        <button
+                            className={`${styles.loginButton} ${session ? styles.logoutButton : ""
+                                }`}
+                            onClick={handleAuth}
+                        >
+                            {session ? "로그아웃" : "로그인"}
                         </button>
                     </li>
                     <Image
