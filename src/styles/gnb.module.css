@@ -2,44 +2,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* 모든 자식 요소를 수직 가운데 정렬 */
     padding: 1rem 2rem;
     background-color: #ffffff;
     color: rgb(255, 255, 255);
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
 
-.logo a {
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #000000;
-    display: flex;
-    justify-content: center;
-}
-
-.menu {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-.menu li {
-    display: flex;
-    align-items: center;
-}
-
-.menu li a {
-    text-decoration: none;
-    color: rgb(0, 0, 0);
-    font-size: 1rem;
-    transition: color 0.3s;
-}
-
-.menu li a:hover {
-    color: #00bcd4;
-}
 
 .loginButton {
     background-color: #00bcd4;
@@ -64,6 +32,39 @@
     background-color: #008c9e;
 }
 
+.logo a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.munu li {
+    align-items: center;
+    display: flex;
+    align-items: center;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.menu li a:hover {
+    color: #00bcd4;
+}
+
 .menuIcon {
     display: none;
 }
@@ -71,9 +72,16 @@
 @media screen and (max-width: 600px) {
     .link {
         display: none;
+
     }
 
     .menuIcon {
         display: flex;
     }
+}
+
+.supernovaIcon {
+    margin-right: 20px;
+    width: 30px;
+    height: 30px;
 }
