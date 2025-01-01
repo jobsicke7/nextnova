@@ -2,24 +2,35 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import style from '@/styles/main.module.css';
 import styles from './login.module.css';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
-export default function Home() {
+export default function LoginPage() {
     const { data: session } = useSession();
     const router = useRouter();
 
-    const [id, setId] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (id === '나윱' && password === '1234') {
-            router.push('/dashboard');
-        } else {
-            setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+        try {
+            const result = await signIn('credentials', {
+                email,
+                password,
+                redirect: false
+            });
+
+            if (result?.error) {
+                setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+            } else {
+                router.push('/dashboard');
+            }
+        } catch (error) {
+            setError('로그인 중 오류가 발생했습니다.');
         }
     };
 
@@ -39,13 +50,13 @@ export default function Home() {
                 <h1 className={styles.title}>로그인</h1>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="id">아이디</label>
+                        <label htmlFor="email">이메일</label>
                         <input
-                            id="id"
-                            type="text"
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
-                            placeholder="아이디를 입력하세요"
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="이메일을 입력하세요"
                             required
                         />
                     </div>
@@ -65,6 +76,9 @@ export default function Home() {
                         로그인
                     </button>
                 </form>
+                <div className={styles.registerLink}>
+                    <Link href="/register">계정이 없으신가요? 회원가입</Link>
+                </div>
             </div>
             <button onClick={() => signIn('naver')} className={styles.oauthButton}>
                 네이버로 로그인

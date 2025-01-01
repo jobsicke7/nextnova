@@ -95,3 +95,13 @@
 .oauthButton:hover {
     background-color: #02943f;
 }
+
+.registerLink {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.registerLink a {
+    color: #0070f3;
+    text-decoration: none;
+}

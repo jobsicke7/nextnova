@@ -16,7 +16,6 @@ const GNB: React.FC = () => {
     return (
         <>
             <div className={styles.gnb}>
-
                 <div className={styles.logo}>
                     <Link href="/" className={styles.logoLink}>
                         <Image
@@ -41,7 +40,9 @@ const GNB: React.FC = () => {
                         <Link href="/contact">Contact</Link>
                     </li>
                     <li className={styles.link}>
-                        <Link href="/more">More</Link>
+                        <button className={styles.loginButton}>
+                            <Link href="/login">로그인</Link>
+                        </button>
                     </li>
                     <Image
                         src="/icons/menu.svg"

@@ -1,15 +1,13 @@
-/* /app/styles/GNB.module.css */
 .gnb {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* 모든 자식 요소를 수직 가운데 정렬 */
     padding: 1rem 2rem;
     background-color: #ffffff;
     color: rgb(255, 255, 255);
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
-
-
 
 .logo a {
     text-decoration: none;
@@ -23,7 +21,13 @@
 .menu {
     list-style: none;
     display: flex;
+    align-items: center;
     gap: 2rem;
+}
+
+.menu li {
+    display: flex;
+    align-items: center;
 }
 
 .menu li a {
@@ -37,6 +41,29 @@
     color: #00bcd4;
 }
 
+.loginButton {
+    background-color: #00bcd4;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginButton a {
+    text-decoration: none;
+    color: white;
+}
+
+.loginButton:hover {
+    background-color: #008c9e;
+}
+
 .menuIcon {
     display: none;
 }
@@ -44,16 +71,9 @@
 @media screen and (max-width: 600px) {
     .link {
         display: none;
-
     }
 
     .menuIcon {
         display: flex;
     }
-}
-
-.supernovaIcon {
-    margin-right: 20px;
-    width: 30px;
-    height: 30px;
 }
