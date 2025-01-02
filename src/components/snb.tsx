@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from '../styles/snb.module.css';
 import Link from 'next/link';
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 interface SNBProps {
     isOpen: boolean;
     onClose: () => void;
@@ -15,14 +16,12 @@ interface NavLinkProps {
     onClose: () => void;
 }
 
-// NavLink 컴포넌트 생성
 const NavLink = ({ href, children, onClose }: NavLinkProps) => {
     return (
         <Link
             href={href}
             className={styles.navItem}
             onClick={(e) => {
-                // 기본 Link 동작은 유지하면서 SNB를 닫음
                 onClose();
             }}
         >
@@ -32,12 +31,13 @@ const NavLink = ({ href, children, onClose }: NavLinkProps) => {
 };
 
 const SNB = ({ isOpen, onClose }: SNBProps) => {
-    const { data: session } = useSession(); // 로그인 세션 확인
+    const { data: session } = useSession();
+    const router = useRouter();
     const handleAuth = () => {
         if (session) {
-            signOut(); // 로그아웃 처리
+            signOut();
         } else {
-            signIn(); // 로그인 페이지로 이동
+            router.push("/login");
         }
     };
     const [mounted, setMounted] = useState(false);

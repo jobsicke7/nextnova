@@ -6,9 +6,11 @@ import styles from "../styles/gnb.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import SNB from "./snb";
+import { useRouter } from "next/navigation";
 
 const GNB: React.FC = () => {
-    const { data: session } = useSession(); // 로그인 세션 확인
+    const router = useRouter();
+    const { data: session } = useSession();
     const [isSnbOpen, setIsSnbOpen] = useState(false);
 
     const handleClick = () => {
@@ -17,9 +19,9 @@ const GNB: React.FC = () => {
 
     const handleAuth = () => {
         if (session) {
-            signOut(); // 로그아웃 처리
+            signOut();
         } else {
-            signIn(); // 로그인 페이지로 이동
+            router.push("/login");
         }
     };
 
@@ -48,6 +50,9 @@ const GNB: React.FC = () => {
                     </li>
                     <li className={styles.link}>
                         <Link href="/contact">Contact</Link>
+                    </li>
+                    <li className={styles.link}>
+                        <Link href="/more">More</Link>
                     </li>
                     <li className={styles.link}>
                         <button
