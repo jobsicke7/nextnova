@@ -63,3 +63,37 @@
 .navItem:hover {
     color: #3b82f6;
 }
+
+.loginButton {
+    background-color: #828282;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginButton a {
+    text-decoration: none;
+    color: white;
+}
+
+.loginButton:hover {
+    background-color: #3d3d3d;
+}
+
+/* 로그아웃 버튼 스타일 */
+.logoutButton {
+    background-color: #ff4d4d;
+    /* 빨간색 */
+}
+
+.logoutButton:hover {
+    background-color: #cc0000;
+    /* 더 어두운 빨간색 */
+}

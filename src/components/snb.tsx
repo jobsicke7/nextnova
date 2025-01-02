@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/snb.module.css';
 import Link from 'next/link';
-
+import { useSession, signIn, signOut } from "next-auth/react";
 interface SNBProps {
     isOpen: boolean;
     onClose: () => void;
@@ -32,6 +32,14 @@ const NavLink = ({ href, children, onClose }: NavLinkProps) => {
 };
 
 const SNB = ({ isOpen, onClose }: SNBProps) => {
+    const { data: session } = useSession(); // 로그인 세션 확인
+    const handleAuth = () => {
+        if (session) {
+            signOut(); // 로그아웃 처리
+        } else {
+            signIn(); // 로그인 페이지로 이동
+        }
+    };
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -73,6 +81,13 @@ const SNB = ({ isOpen, onClose }: SNBProps) => {
                     <NavLink href="/notice" onClose={onClose}>Notice</NavLink>
                     <NavLink href="/contact" onClose={onClose}>Contact</NavLink>
                     <NavLink href="/more" onClose={onClose}>More</NavLink>
+                    <button
+                        className={`${styles.loginButton} ${session ? styles.logoutButton : ""
+                            }`}
+                        onClick={handleAuth}
+                    >
+                        {session ? "로그아웃" : "로그인"}
+                    </button>
                 </nav>
             </div>
         </>
