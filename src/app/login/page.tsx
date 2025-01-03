@@ -39,8 +39,8 @@ export default function LoginPage() {
                 <p>환영합니다, {session.user?.name}님!</p>
                 <p>이메일: {session.user?.email}</p>
                 <p>ID: {session.user?.id}</p>
-                <img src={session.user?.image ?? ''} alt="프로필" style={{ width: 100 }} />
-                <button onClick={() => signOut()}>로그아웃</button>
+                {/* <img src={session.user?.image ?? ''} alt="프로필" style={{ width: 100 }} />
+                <button onClick={() => signOut()}>로그아웃</button> */}
             </div>
         );
     }
