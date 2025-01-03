@@ -209,7 +209,7 @@ export default function RegisterPage() {
                             <button
                                 type="button"
                                 onClick={() => setFormStep('initial')}
-                                className={styles.backButton}
+                                className={styles.nextButton}
                             >
                                 이전
                             </button>
@@ -236,7 +236,7 @@ export default function RegisterPage() {
                             <button
                                 type="button"
                                 onClick={() => setFormStep('profile')}
-                                className={styles.backButton}
+                                className={styles.nextButton}
                             >
                                 이전
                             </button>
