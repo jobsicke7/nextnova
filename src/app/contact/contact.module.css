@@ -15,14 +15,14 @@
 
 .title {
     font-size: 2.5rem;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 1rem;
     animation: fadeIn 1s ease-in-out;
 }
 
 .subtitle {
     font-size: 1.25rem;
-    color: #666;
+    color: #c8c8c8;
     margin-bottom: 2rem;
     animation: fadeIn 1.5s ease-in-out;
 }
@@ -36,7 +36,7 @@
 }
 
 .contactCard {
-    background-color: #fff;
+    background-color: #232323;
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -51,14 +51,14 @@
 } */
 
 .contactLink {
-    color: #634ae2;
+    color: #fbffdb;
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .contactLink:hover {
-    color: #3612d8;
+    color: #f2fdad;
 }
 
 @keyframes fadeIn {
@@ -79,4 +79,8 @@
     to {
         transform: translateY(0);
     }
+}
+
+.text {
+    color: white;
 }

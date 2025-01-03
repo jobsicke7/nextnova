@@ -11,7 +11,7 @@ const ContactPage = () => {
 
                 <div className={styles.contactMethods}>
                     <div className={styles.contactCard}>
-                        <h3>Email</h3>
+                        <h3 className={styles.text}>Email</h3>
                         <a
                             href="mailto:contact@jobsicke.xyz"
                             className={styles.contactLink}
@@ -30,7 +30,7 @@ const ContactPage = () => {
                         </a>
                     </div>
                     <div className={styles.contactCard}>
-                        <h3>Wakzoo</h3>
+                        <h3 className={styles.text}>Wakzoo</h3>
                         <a
                             href="https://cafe.naver.com/steamindiegame"
                             className={styles.contactLink}
@@ -41,7 +41,7 @@ const ContactPage = () => {
                         </a>
                     </div>
                     <div className={styles.contactCard}>
-                        <h3>Discord</h3>
+                        <h3 className={styles.text}>Discord</h3>
                         <a
                             href="https://discord.com/users/jobsicke282"
                             className={styles.contactLink}

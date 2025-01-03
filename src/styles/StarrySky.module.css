@@ -1,0 +1,36 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(17 24 39);
+    overflow: hidden;
+    z-index: -1;
+    /* 다른 컨텐츠 뒤로 보내기 */
+}
+
+.star {
+    position: absolute;
+    border-radius: 9999px;
+    background-color: rgb(254 240 138);
+    opacity: 0;
+    transform-origin: center center;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
