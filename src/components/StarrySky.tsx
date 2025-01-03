@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import styles from '@/styles/starrySky.module.css';
+import styles from '../styles/StarrySky.module.css';
 
 interface StarProps {
     id: number;
