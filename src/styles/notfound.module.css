@@ -3,20 +3,21 @@
     flex-direction: column;
     max-width: 1280px;
     width: 100%;
-    height: 72vh;
+    height: 75vh;
     justify-content: center;
     justify-self: center;
     align-items: center;
     text-align: center;
+    color: white;
 }
 
 .button {
+    margin-top: 5%;
     gap: 32px;
     display: flex;
-    margin: 0;
     padding: 12px 40px;
     border-radius: 8px;
-    background-color: #0089ff;
+    background-color: #002444;
     text-decoration: none;
     color: #ffffff;
     font-size: 16px;
@@ -24,7 +25,7 @@
 }
 
 .button:hover {
-    background-color: #0058b6;
+    background-color: #003c7b;
 }
 
 @media screen and (max-width: 1440px) {
