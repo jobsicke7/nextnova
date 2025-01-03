@@ -9,7 +9,7 @@ const RealTimeSpaceInfo = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [loopIndex, setLoopIndex] = useState(0);
 
-    const textList = ["실시간 우주정보", "모든 천체정보", "인공위성 위치"];
+    const textList = ["실시간 우주정보", "모든 천체정보", "인공위성 위치정보"];
 
     useEffect(() => {
         const handleTypingEffect = () => {
