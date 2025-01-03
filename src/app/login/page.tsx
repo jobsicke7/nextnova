@@ -81,9 +81,9 @@ export default function LoginPage() {
                     <Link href="/register">계정이 없으신가요? 회원가입</Link>
                 </div>
             </div>
-            <button onClick={() => signIn('naver')} className={styles.oauthButton}>
+            {/* <button onClick={() => signIn('naver')} className={styles.oauthButton}>
                 네이버로 로그인
-            </button>
+            </button> */}
         </div>
     );
 }
