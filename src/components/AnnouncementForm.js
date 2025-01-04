@@ -79,7 +79,7 @@ export default function AnnouncementForm() {
     };
 
     return (
-        <div style={{ margin: "30px 10px", minHeight: "64.7vh", maxWidth: "100%" }}>
+        <div style={{ margin: "30px 10px", minHeight: "67.2vh", maxWidth: "100%", color: "white" }}>
             <h1>공지 작성</h1>
             <form onSubmit={handleSubmit}>
                 <input
@@ -122,11 +122,12 @@ export default function AnnouncementForm() {
                         <div
                             key={index}
                             style={{
-                                border: "1px solid #ccc",
+                                border: "1px solid rgb(242, 255, 0)",
                                 borderRadius: "5px",
                                 margin: "10px 0",
                                 padding: "10px",
-                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                boxShadow: "0 4px 8px rgba(251, 255, 0, 0.3)",
+                                backgroundColor: "rgb(21, 21, 21)"
                             }}
                         >
                             <h3 style={{ margin: "0 0 5px" }}>{announcement.title}</h3>

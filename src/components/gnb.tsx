@@ -43,16 +43,13 @@ const GNB: React.FC = () => {
 
                 <ul className={styles.menu}>
                     <li className={styles.link}>
-                        <Link href="/">About</Link>
+                        <Link href="/about">About</Link>
                     </li>
                     <li className={styles.link}>
                         <Link href="/notice">Notice</Link>
                     </li>
                     <li className={styles.link}>
-                        <Link href="/contact">Contact</Link>
-                    </li>
-                    <li className={styles.link}>
-                        <Link href="/more">More</Link>
+                        <Link href="/service">Service</Link>
                     </li>
                     <li className={styles.link}>
                         <button

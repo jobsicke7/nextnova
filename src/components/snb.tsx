@@ -77,14 +77,15 @@ const SNB = ({ isOpen, onClose }: SNBProps) => {
                 </div>
 
                 <nav className={styles.nav}>
-                    <NavLink href="/" onClose={onClose}>About</NavLink>
+                    <NavLink href="/about" onClose={onClose}>About</NavLink>
                     <NavLink href="/notice" onClose={onClose}>Notice</NavLink>
-                    <NavLink href="/contact" onClose={onClose}>Contact</NavLink>
-                    <NavLink href="/more" onClose={onClose}>More</NavLink>
+                    <NavLink href="/service" onClose={onClose}>Service</NavLink>
                     <button
-                        className={`${styles.loginButton} ${session ? styles.logoutButton : ""
-                            }`}
-                        onClick={handleAuth}
+                        className={`${styles.loginButton} ${session ? styles.logoutButton : ""}`}
+                        onClick={() => {
+                            handleAuth();
+                            onClose();
+                        }}
                     >
                         {session ? "로그아웃" : "로그인"}
                     </button>
