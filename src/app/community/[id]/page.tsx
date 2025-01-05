@@ -78,6 +78,13 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
                             </button>
                         </div>
                     )}
+                    {session?.user?.email === "kr.nextnova@gmail.com" && (
+                        <div className={styles.postActions}>
+                            <button onClick={handleDelete} className={styles.deleteButton}>
+                                삭제
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className={styles.content} data-color-mode="dark">
