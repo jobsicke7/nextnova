@@ -48,9 +48,11 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
             if (res.ok) {
                 alert('게시글을 삭제했습니다');
             } else {
+
                 alert('게시글을 삭제했습니다');
             }
         } catch (error) {
+            window.location.href = '/community';
             alert('게시글을 삭제했습니다');
         }
     };
