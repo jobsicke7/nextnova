@@ -1,0 +1,37 @@
+.container {
+    margin-top: 40px;
+}
+
+.container h3 {
+    color: white;
+}
+
+.commentList {
+    list-style: none;
+    padding: 0;
+}
+
+.commentItem {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+}
+
+.commentHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.author {
+    font-weight: bold;
+    color: white;
+}
+
+.date {
+    color: #aaa;
+}
+
+.content {
+    line-height: 1.4;
+    color: #ddd;
+}

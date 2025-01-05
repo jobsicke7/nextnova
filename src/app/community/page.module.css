@@ -1,0 +1,46 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 69.5vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    color: white;
+}
+
+.postList {
+    list-style: none;
+    padding: 0;
+}
+
+.postItem {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+}
+
+.postTitle {
+    font-size: 18px;
+    color: #fff;
+}
+
+.viewCount {
+    float: right;
+    color: #aaa;
+}
+
+.writeButton {
+    padding: 8px 16px;
+    background-color: #0070f3;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+}

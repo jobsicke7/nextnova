@@ -79,6 +79,7 @@ const SNB = ({ isOpen, onClose }: SNBProps) => {
                 <nav className={styles.nav}>
                     <NavLink href="/about" onClose={onClose}>About</NavLink>
                     <NavLink href="/notice" onClose={onClose}>Notice</NavLink>
+                    <NavLink href="/community" onClose={onClose}>Community</NavLink>
                     <NavLink href="/service" onClose={onClose}>Service</NavLink>
                     <button
                         className={`${styles.loginButton} ${session ? styles.logoutButton : ""}`}

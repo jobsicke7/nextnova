@@ -1,0 +1,36 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.postHeader {
+    margin-bottom: 20px;
+}
+
+.postHeader h1 {
+    color: white;
+}
+
+.postInfo {
+    display: flex;
+    gap: 20px;
+    color: #aaa;
+}
+
+.content {
+    line-height: 1.6;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 4px;
+    border: 1px solid #333;
+    color: white;
+}
+
+.shareButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #aaa;
+}

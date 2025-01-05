@@ -49,6 +49,9 @@ const GNB: React.FC = () => {
                         <Link href="/notice">Notice</Link>
                     </li>
                     <li className={styles.link}>
+                        <Link href="/community">Community</Link>
+                    </li>
+                    <li className={styles.link}>
                         <Link href="/service">Service</Link>
                     </li>
                     <li className={styles.link}>
