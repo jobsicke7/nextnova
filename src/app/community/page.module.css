@@ -26,6 +26,10 @@
     border-bottom: 1px solid #333;
 }
 
+.postItem a {
+    text-decoration: none;
+}
+
 .postTitle {
     font-size: 18px;
     color: #fff;
@@ -43,4 +47,29 @@
     border-radius: 4px;
     text-decoration: none;
     font-weight: 500;
+}
+
+.noticeTag {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.postMeta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.author {
+    float: right;
+    color: #ddd;
 }

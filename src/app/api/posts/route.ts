@@ -25,7 +25,8 @@ export async function POST(request: Request) {
         content,
         authorName,
         views: 0,
-        createdAt: new Date()
+        createdAt: new Date(),
+        authorEmail: session.user?.email
     };
 
     const result = await collection.insertOne(post);

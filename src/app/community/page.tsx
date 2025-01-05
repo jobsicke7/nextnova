@@ -12,7 +12,21 @@ export default function CommunityPage() {
     useEffect(() => {
         fetch('/api/posts')
             .then(res => res.json())
-            .then(data => setPosts(data));
+            .then(data => {
+                // 공지사항을 최상단에 정렬하고, 각 그룹 내에서 시간순 정렬
+                const sortedPosts = data.sort((a: Post, b: Post) => {
+                    const isANotice = a.authorEmail === 'kr.nextnova@gmail.com';
+                    const isBNotice = b.authorEmail === 'kr.nextnova@gmail.com';
+
+                    if (isANotice && !isBNotice) return -1;
+                    if (!isANotice && isBNotice) return 1;
+                    if (isANotice && isBNotice) {
+                        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                    }
+                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                });
+                setPosts(sortedPosts);
+            });
     }, []);
 
     return (
@@ -29,8 +43,14 @@ export default function CommunityPage() {
                 {posts.map(post => (
                     <li key={post._id} className={styles.postItem}>
                         <Link href={`/community/${post._id}`}>
+                            {post.authorEmail === 'kr.nextnova@gmail.com' && (
+                                <span className={styles.noticeTag}>공지</span>
+                            )}
                             <span className={styles.postTitle}>{post.title}</span>
-                            <span className={styles.viewCount}>조회수: {post.views}</span>
+                            <div className={styles.postMeta}>
+                                <span className={styles.author}>{post.authorName}</span>
+                                <span className={styles.viewCount}>조회수: {post.views}</span>
+                            </div>
                         </Link>
                     </li>
                 ))}
