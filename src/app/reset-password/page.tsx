@@ -52,7 +52,7 @@ export default function ResetPasswordPage() {
             if (response.ok) {
                 router.push('/login');
             } else {
-                setError('비밀번호 재설정에 실패했습니다.');
+                setError('유효하지 않거나 만료된 토큰입니다.');
             }
         } catch (error) {
             setError('오류가 발생했습니다.');
