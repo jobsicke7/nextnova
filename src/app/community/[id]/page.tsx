@@ -46,9 +46,10 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
             });
 
             if (res.ok) {
+                router.push("/community")
                 alert('게시글을 삭제했습니다');
             } else {
-
+                router.push("/community")
                 alert('게시글을 삭제했습니다');
             }
         } catch (error) {
