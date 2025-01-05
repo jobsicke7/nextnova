@@ -4,7 +4,7 @@ import clientPromise from '../../../../../lib/mongodb';
 
 // 라우트 컨텍스트 타입 지정
 export async function GET(
-    request: Request,
+    _request: Request,
     { params }: { params: { id: string } } // Next.js에서 요구하는 정확한 타입
 ) {
     try {
