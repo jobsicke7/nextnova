@@ -58,10 +58,10 @@ export async function DELETE(
     const collection = client.db('community').collection('posts');
 
     const post = await collection.findOne({ _id: new ObjectId((await params).id) });
-    if (!post || post.authorEmail !== session.user?.email) {
-        return new NextResponse('Forbidden', { status: 403 });
+    if (session.user?.email === 'kr.nextnova' || (post && post.authorEmail === session.user?.email)) {
+        await collection.deleteOne({ _id: new ObjectId((await params).id) });
+        return NextResponse.json({ success: true });
     }
 
-    await collection.deleteOne({ _id: new ObjectId((await params).id) });
-    return NextResponse.json({ success: true });
+    return new NextResponse('Forbidden', { status: 403 });
 }
