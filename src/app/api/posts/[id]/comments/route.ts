@@ -2,17 +2,17 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import clientPromise from '../../../../../lib/mongodb';
 
-// 컨텍스트 타입 정의를 Next.js 요구사항에 맞게 조정
+// 라우트 컨텍스트 타입 지정
 export async function GET(
     request: Request,
-    context: { params: { id: string } }
+    { params }: { params: { id: string } } // Next.js에서 요구하는 정확한 타입
 ) {
     try {
         const client = await clientPromise;
         const collection = client.db('community').collection('comments');
 
         const comments = await collection
-            .find({ postId: context.params.id })
+            .find({ postId: params.id })
             .sort({ createdAt: -1 })
             .toArray();
 
@@ -25,7 +25,7 @@ export async function GET(
 
 export async function POST(
     request: Request,
-    context: { params: { id: string } }
+    { params }: { params: { id: string } } // Next.js에서 요구하는 정확한 타입
 ) {
     try {
         const session = await getServerSession();
@@ -42,7 +42,7 @@ export async function POST(
         const collection = client.db('community').collection('comments');
 
         const comment = {
-            postId: context.params.id,
+            postId: params.id,
             content,
             authorName: session.user?.name || 'Anonymous',
             createdAt: new Date(),
