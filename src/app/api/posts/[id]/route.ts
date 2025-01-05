@@ -58,7 +58,7 @@ export async function DELETE(
     const collection = client.db('community').collection('posts');
 
     const post = await collection.findOne({ _id: new ObjectId((await params).id) });
-    if (session.user?.email === 'kr.nextnova' || (post && post.authorEmail === session.user?.email)) {
+    if (session.user?.email === 'kr.nextnova@gmail.com' || (post && post.authorEmail === session.user?.email)) {
         await collection.deleteOne({ _id: new ObjectId((await params).id) });
         return NextResponse.json({ success: true });
     }
