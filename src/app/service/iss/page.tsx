@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
+import dynamic from 'next/dynamic';
 import { Icon } from 'leaflet';
 import { twoline2satrec, propagate, gstime, eciToGeodetic } from 'satellite.js';
 import type { EciVec3 } from 'satellite.js';
@@ -12,35 +12,59 @@ interface OrbitPoint {
     type: 'past' | 'future';
 }
 
+// Dynamic imports for Leaflet components
+const MapContainer = dynamic(
+    () => import('react-leaflet').then(mod => mod.MapContainer),
+    { ssr: false }
+);
+const TileLayer = dynamic(
+    () => import('react-leaflet').then(mod => mod.TileLayer),
+    { ssr: false }
+);
+const Marker = dynamic(
+    () => import('react-leaflet').then(mod => mod.Marker),
+    { ssr: false }
+);
+const Polyline = dynamic(
+    () => import('react-leaflet').then(mod => mod.Polyline),
+    { ssr: false }
+);
+
 const ISSTracker = () => {
     const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
     const [issPosition, setIssPosition] = useState<[number, number]>([0, 0]);
     const [mapType, setMapType] = useState<'default' | 'satellite'>('default');
     const [orbitPath, setOrbitPath] = useState<OrbitPoint[]>([]);
+    const [isClient, setIsClient] = useState(false);
 
-    const issIcon = new Icon({
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    const issIcon = isClient ? new Icon({
         iconUrl: '/images/iss.png',
         iconSize: [32, 32],
         iconAnchor: [16, 16],
-    });
+    }) : null;
 
-    const userIcon = new Icon({
+    const userIcon = isClient ? new Icon({
         iconUrl: '/images/my.svg',
         iconSize: [32, 32],
         iconAnchor: [16, 16],
-    });
+    }) : null;
 
-    // Define map bounds
     const maxBounds: [[number, number], [number, number]] = [
-        [-90, -180], // South West
-        [90, 180]    // North East
+        [-90, -180],
+        [90, 180]
     ];
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(
-            (position) => setUserPosition([position.coords.latitude, position.coords.longitude]),
-            (error) => console.error('Error:', error)
-        );
+        if (typeof window !== 'undefined') {
+            navigator.geolocation.getCurrentPosition(
+                (position) => setUserPosition([position.coords.latitude, position.coords.longitude]),
+                (error) => console.error('Error:', error)
+            );
+        }
     }, []);
 
     useEffect(() => {
@@ -56,7 +80,7 @@ const ISSTracker = () => {
                     const orbits: OrbitPoint[] = [];
                     const currentTime = new Date();
 
-                    // Past orbits (3 hours back)
+                    // Past orbits
                     for (let i = 180; i >= 0; i--) {
                         const pastTime = new Date(currentTime.getTime() - i * 60000);
                         const positionAndVelocity = propagate(satrec, pastTime);
@@ -75,7 +99,7 @@ const ISSTracker = () => {
                         }
                     }
 
-                    // Future orbits (3 hours ahead)
+                    // Future orbits
                     for (let i = 0; i <= 180; i++) {
                         const futureTime = new Date(currentTime.getTime() + i * 60000);
                         const positionAndVelocity = propagate(satrec, futureTime);
@@ -101,10 +125,12 @@ const ISSTracker = () => {
             }
         };
 
-        calculateOrbits();
-        const interval = setInterval(calculateOrbits, 60000);
-        return () => clearInterval(interval);
-    }, []);
+        if (isClient) {
+            calculateOrbits();
+            const interval = setInterval(calculateOrbits, 60000);
+            return () => clearInterval(interval);
+        }
+    }, [isClient]);
 
     useEffect(() => {
         const fetchISSPosition = async () => {
@@ -120,10 +146,12 @@ const ISSTracker = () => {
             }
         };
 
-        fetchISSPosition();
-        const interval = setInterval(fetchISSPosition, 1000);
-        return () => clearInterval(interval);
-    }, []);
+        if (isClient) {
+            fetchISSPosition();
+            const interval = setInterval(fetchISSPosition, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [isClient]);
 
     const renderOrbits = () => {
         const segments: { past: [number, number][][], future: [number, number][][] } = {
@@ -183,6 +211,8 @@ const ISSTracker = () => {
         );
     };
 
+    if (!isClient) return null;
+
     return (
         <div className={styles.container}>
             <div className={styles.controls}>
@@ -213,8 +243,8 @@ const ISSTracker = () => {
                     bounds={maxBounds}
                 />
 
-                {userPosition && <Marker position={userPosition} icon={userIcon} />}
-                <Marker position={issPosition} icon={issIcon} />
+                {userPosition && userIcon && <Marker position={userPosition} icon={userIcon} />}
+                {issIcon && <Marker position={issPosition} icon={issIcon} />}
                 {renderOrbits()}
             </MapContainer>
         </div>
