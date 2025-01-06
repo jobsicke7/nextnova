@@ -21,7 +21,7 @@ const ContactPage = () => {
                     </div>
                     <div className={styles.contactCard}>
                         <h3 className={styles.text}>우주 소식 확인</h3>
-                        <Link href="/service/spaceissue" className={styles.contactLink}>서비스 이용하러 가기 {">"}</Link>
+                        <Link href="/astroinfo" className={styles.contactLink}>서비스 이용하러 가기 {">"}</Link>
                     </div>
                 </div>
             </div>
