@@ -33,7 +33,7 @@ export default function CommunityPage() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1>커뮤니티</h1>
-                {session && (
+                {session?.user.email === "kr.nextnova@gmail.com" && (
                     <Link href="/astroinfo/write" className={styles.writeButton}>
                         글쓰기
                     </Link>
