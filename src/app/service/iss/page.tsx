@@ -1,78 +1,59 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { Icon } from 'leaflet';
-import { twoline2satrec, propagate, gstime, eciToGeodetic } from 'satellite.js';
-import type { EciVec3 } from 'satellite.js';
-import styles from './map.module.css';
-import 'leaflet/dist/leaflet.css';
+
+import dynamic from "next/dynamic";
+import React, { useEffect, useState } from "react";
+import { Icon } from "leaflet";
+import { twoline2satrec, propagate, gstime, eciToGeodetic } from "satellite.js";
+import type { EciVec3 } from "satellite.js";
+import styles from "./map.module.css";
+import "leaflet/dist/leaflet.css";
+
+const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
+const Marker = dynamic(() => import("react-leaflet").then((mod) => mod.Marker), { ssr: false });
+const Polyline = dynamic(() => import("react-leaflet").then((mod) => mod.Polyline), { ssr: false });
 
 interface OrbitPoint {
     position: [number, number];
-    type: 'past' | 'future';
+    type: "past" | "future";
 }
-
-// Dynamic imports for Leaflet components
-const MapContainer = dynamic(
-    () => import('react-leaflet').then(mod => mod.MapContainer),
-    { ssr: false }
-);
-const TileLayer = dynamic(
-    () => import('react-leaflet').then(mod => mod.TileLayer),
-    { ssr: false }
-);
-const Marker = dynamic(
-    () => import('react-leaflet').then(mod => mod.Marker),
-    { ssr: false }
-);
-const Polyline = dynamic(
-    () => import('react-leaflet').then(mod => mod.Polyline),
-    { ssr: false }
-);
 
 const ISSTracker = () => {
     const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
     const [issPosition, setIssPosition] = useState<[number, number]>([0, 0]);
-    const [mapType, setMapType] = useState<'default' | 'satellite'>('default');
+    const [mapType, setMapType] = useState<"default" | "satellite">("default");
     const [orbitPath, setOrbitPath] = useState<OrbitPoint[]>([]);
-    const [isClient, setIsClient] = useState(false);
 
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    const issIcon = isClient ? new Icon({
-        iconUrl: '/images/iss.png',
+    const issIcon = new Icon({
+        iconUrl: "/images/iss.png",
         iconSize: [32, 32],
         iconAnchor: [16, 16],
-    }) : null;
+    });
 
-    const userIcon = isClient ? new Icon({
-        iconUrl: '/images/my.svg',
+    const userIcon = new Icon({
+        iconUrl: "/images/my.svg",
         iconSize: [32, 32],
         iconAnchor: [16, 16],
-    }) : null;
+    });
 
     const maxBounds: [[number, number], [number, number]] = [
         [-90, -180],
-        [90, 180]
+        [90, 180],
     ];
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            navigator.geolocation.getCurrentPosition(
-                (position) => setUserPosition([position.coords.latitude, position.coords.longitude]),
-                (error) => console.error('Error:', error)
-            );
-        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => setUserPosition([position.coords.latitude, position.coords.longitude]),
+            (error) => console.error("Error:", error)
+        );
     }, []);
 
     useEffect(() => {
         const calculateOrbits = async () => {
             try {
-                const response = await fetch('https://www.celestrak.com/NORAD/elements/stations.txt');
+                const response = await fetch("https://www.celestrak.com/NORAD/elements/stations.txt");
                 const data = await response.text();
-                const lines = data.split('\n');
+                const lines = data.split("\n");
                 const issLines = lines.slice(0, 3);
                 const satrec = twoline2satrec(issLines[1], issLines[2]);
 
@@ -80,40 +61,38 @@ const ISSTracker = () => {
                     const orbits: OrbitPoint[] = [];
                     const currentTime = new Date();
 
-                    // Past orbits
                     for (let i = 180; i >= 0; i--) {
                         const pastTime = new Date(currentTime.getTime() - i * 60000);
                         const positionAndVelocity = propagate(satrec, pastTime);
                         const gmst = gstime(pastTime);
 
                         const position = positionAndVelocity.position as EciVec3<number>;
-                        if (position && 'x' in position) {
+                        if (position && "x" in position) {
                             const geodetic = eciToGeodetic(position, gmst);
                             orbits.push({
                                 position: [
                                     (geodetic.latitude * 180) / Math.PI,
-                                    (geodetic.longitude * 180) / Math.PI
+                                    (geodetic.longitude * 180) / Math.PI,
                                 ],
-                                type: 'past'
+                                type: "past",
                             });
                         }
                     }
 
-                    // Future orbits
                     for (let i = 0; i <= 180; i++) {
                         const futureTime = new Date(currentTime.getTime() + i * 60000);
                         const positionAndVelocity = propagate(satrec, futureTime);
                         const gmst = gstime(futureTime);
 
                         const position = positionAndVelocity.position as EciVec3<number>;
-                        if (position && 'x' in position) {
+                        if (position && "x" in position) {
                             const geodetic = eciToGeodetic(position, gmst);
                             orbits.push({
                                 position: [
                                     (geodetic.latitude * 180) / Math.PI,
-                                    (geodetic.longitude * 180) / Math.PI
+                                    (geodetic.longitude * 180) / Math.PI,
                                 ],
-                                type: 'future'
+                                type: "future",
                             });
                         }
                     }
@@ -121,42 +100,38 @@ const ISSTracker = () => {
                     setOrbitPath(orbits);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error("Error:", error);
             }
         };
 
-        if (isClient) {
-            calculateOrbits();
-            const interval = setInterval(calculateOrbits, 60000);
-            return () => clearInterval(interval);
-        }
-    }, [isClient]);
+        calculateOrbits();
+        const interval = setInterval(calculateOrbits, 60000);
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         const fetchISSPosition = async () => {
             try {
-                const response = await fetch('http://api.open-notify.org/iss-now.json');
+                const response = await fetch("http://api.open-notify.org/iss-now.json");
                 const data = await response.json();
                 setIssPosition([
                     parseFloat(data.iss_position.latitude),
-                    parseFloat(data.iss_position.longitude)
+                    parseFloat(data.iss_position.longitude),
                 ]);
             } catch (error) {
-                console.error('Error:', error);
+                console.error("Error:", error);
             }
         };
 
-        if (isClient) {
-            fetchISSPosition();
-            const interval = setInterval(fetchISSPosition, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [isClient]);
+        fetchISSPosition();
+        const interval = setInterval(fetchISSPosition, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
     const renderOrbits = () => {
-        const segments: { past: [number, number][][], future: [number, number][][] } = {
+        const segments: { past: [number, number][][]; future: [number, number][][] } = {
             past: [],
-            future: []
+            future: [],
         };
         let currentPastSegment: [number, number][] = [];
         let currentFutureSegment: [number, number][] = [];
@@ -167,17 +142,17 @@ const ISSTracker = () => {
                 const currentLon = point.position[1];
 
                 if (Math.abs(currentLon - prevLon) > 180) {
-                    if (point.type === 'past' && currentPastSegment.length > 0) {
+                    if (point.type === "past" && currentPastSegment.length > 0) {
                         segments.past.push([...currentPastSegment]);
                         currentPastSegment = [];
-                    } else if (point.type === 'future' && currentFutureSegment.length > 0) {
+                    } else if (point.type === "future" && currentFutureSegment.length > 0) {
                         segments.future.push([...currentFutureSegment]);
                         currentFutureSegment = [];
                     }
                 }
             }
 
-            if (point.type === 'past') {
+            if (point.type === "past") {
                 currentPastSegment.push(point.position);
             } else {
                 currentFutureSegment.push(point.position);
@@ -211,16 +186,14 @@ const ISSTracker = () => {
         );
     };
 
-    if (!isClient) return null;
-
     return (
         <div className={styles.container}>
             <div className={styles.controls}>
                 <button
-                    onClick={() => setMapType(mapType === 'default' ? 'satellite' : 'default')}
+                    onClick={() => setMapType(mapType === "default" ? "satellite" : "default")}
                     className={styles.mapToggle}
                 >
-                    {mapType === 'default' ? '위성 지도로 변경' : '기본 지도로 변경'}
+                    {mapType === "default" ? "위성 지도로 변경" : "기본 지도로 변경"}
                 </button>
             </div>
 
@@ -235,16 +208,16 @@ const ISSTracker = () => {
             >
                 <TileLayer
                     url={
-                        mapType === 'default'
-                            ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                            : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                        mapType === "default"
+                            ? "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     }
                     noWrap={true}
                     bounds={maxBounds}
                 />
 
-                {userPosition && userIcon && <Marker position={userPosition} icon={userIcon} />}
-                {issIcon && <Marker position={issPosition} icon={issIcon} />}
+                {userPosition && <Marker position={userPosition} icon={userIcon} />}
+                <Marker position={issPosition} icon={issIcon} />
                 {renderOrbits()}
             </MapContainer>
         </div>
