@@ -78,7 +78,7 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
                             </button>
                         </div>
                     )}
-                    {(session?.user?.email !== post.authorEmail || session?.user?.email === "kr.nextnova@gmail.com") && (
+                    {(session?.user?.email !== post.authorEmail && session?.user?.email === "kr.nextnova@gmail.com") && (
                         <div className={styles.postActions}>
                             <button onClick={handleDelete} className={styles.deleteButton}>
                                 삭제
