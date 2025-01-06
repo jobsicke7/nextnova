@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { use } from 'react';
 import styles from '../../write/page.module.css';
-
+import style from '../../../../styles/main.module.css';
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 export default function EditPage({ params }: { params: Promise<{ id: string }> }) {
@@ -54,7 +54,7 @@ export default function EditPage({ params }: { params: Promise<{ id: string }> }
         setIsSubmitting(false);
     };
 
-    if (isLoading) return <div>로딩중...</div>;
+    if (isLoading) return <div className={style.container}></div>;
 
     return (
         <div className={styles.container}>

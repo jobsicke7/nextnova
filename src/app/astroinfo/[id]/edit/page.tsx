@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { use } from 'react';
+import style from '../../../../styles/main.module.css';
 import dynamic from 'next/dynamic';
 import styles from '../../write/page.module.css';
 
@@ -62,7 +63,7 @@ export default function EditPage({ params }: { params: Promise<{ id: string }> }
         return null;
     }
 
-    if (isLoading) return <div>로딩중...</div>;
+    if (isLoading) return <div className={style.container}></div>;
 
     return (
         <div className={styles.container}>

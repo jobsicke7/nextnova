@@ -6,12 +6,13 @@ import { Share } from 'lucide-react';
 import { use } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './page.module.css';
+import style from '../../../styles/main.module.css';
 import CommentForm from '../../../components/CommentForm';
 import CommentList from '../../../components/CommentList';
 import { Post } from '../../../lib/types';
 import router from 'next/router';
 import Link from 'next/link';
-
+import { format } from 'date-fns';
 // markdown preview를 클라이언트 사이드에서만 로드
 const MarkdownPreview = dynamic(
     () => import('@uiw/react-markdown-preview'),
@@ -35,8 +36,11 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
         navigator.clipboard.writeText(url);
         alert('링크가 복사되었습니다!');
     };
-
-    if (!post) return <div>로딩중...</div>;
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return format(date, 'yyyy-MM-dd HH:mm:ss'); // date-fns로 포맷팅
+    };
+    if (!post) return <div className={style.container}></div>;
     const handleDelete = async () => {
         if (!window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
 
@@ -65,6 +69,7 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
                 <div className={styles.postInfo}>
                     <span>작성자: {post.authorName}</span>
                     <span>조회수: {post.views}</span>
+                    <span>작성일: {formatDate(post.createdAt)}</span>
                     <button onClick={handleShare} className={styles.shareButton}>
                         <Share size={20} />
                     </button>

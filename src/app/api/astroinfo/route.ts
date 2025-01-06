@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     const collection = client.db('servicedata').collection('posts');
 
     const post = {
+        Date: '2024-01-01',
         title,
         content,
         authorName,

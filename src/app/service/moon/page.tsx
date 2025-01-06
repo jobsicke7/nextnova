@@ -1,110 +1,224 @@
 "use client";
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
+import { Icon } from 'leaflet';
+import { twoline2satrec, propagate, gstime, eciToGeodetic } from 'satellite.js';
+import type { EciVec3 } from 'satellite.js';
+import styles from './map.module.css';
+import 'leaflet/dist/leaflet.css';
 
-import { useEffect, useState } from 'react';
-import { MoonPhase } from 'astronomy-engine';
-import styles from '../../../styles/MoonInfo.module.css';
-import dynamic from 'next/dynamic';
-
-// Define interfaces for moon data
-interface MoonTimesType {
-    rise: string;
-    set: string;
+interface OrbitPoint {
+    position: [number, number];
+    type: 'past' | 'future';
 }
 
-const Home: React.FC = () => {
-    const [latitude, setLatitude] = useState<number>(0);
-    const [longitude, setLongitude] = useState<number>(0);
-    const [moonPhase, setMoonPhase] = useState<number>(0);
-    const [moonTimes, setMoonTimes] = useState<MoonTimesType>({ rise: '', set: '' });
-    const [moonAltitude, setMoonAltitude] = useState<number>(0);
-    const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+const ISSTracker = () => {
+    const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
+    const [issPosition, setIssPosition] = useState<[number, number]>([0, 0]);
+    const [mapType, setMapType] = useState<'default' | 'satellite'>('default');
+    const [orbitPath, setOrbitPath] = useState<OrbitPoint[]>([]);
+
+    const issIcon = new Icon({
+        iconUrl: '/images/iss.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+    });
+
+    const userIcon = new Icon({
+        iconUrl: '/images/my.svg',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+    });
+
+    // Define map bounds
+    const maxBounds: [[number, number], [number, number]] = [
+        [-90, -180], // South West
+        [90, 180]    // North East
+    ];
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            const { latitude, longitude } = position.coords;
-            setLatitude(latitude);
-            setLongitude(longitude);
-            calculateMoonData(latitude, longitude, new Date(selectedDate));
+        navigator.geolocation.getCurrentPosition(
+            (position) => setUserPosition([position.coords.latitude, position.coords.longitude]),
+            (error) => console.error('Error:', error)
+        );
+    }, []);
+
+    useEffect(() => {
+        const calculateOrbits = async () => {
+            try {
+                const response = await fetch('https://www.celestrak.com/NORAD/elements/stations.txt');
+                const data = await response.text();
+                const lines = data.split('\n');
+                const issLines = lines.slice(0, 3);
+                const satrec = twoline2satrec(issLines[1], issLines[2]);
+
+                if (satrec) {
+                    const orbits: OrbitPoint[] = [];
+                    const currentTime = new Date();
+
+                    // Past orbits (3 hours back)
+                    for (let i = 180; i >= 0; i--) {
+                        const pastTime = new Date(currentTime.getTime() - i * 60000);
+                        const positionAndVelocity = propagate(satrec, pastTime);
+                        const gmst = gstime(pastTime);
+
+                        const position = positionAndVelocity.position as EciVec3<number>;
+                        if (position && 'x' in position) {
+                            const geodetic = eciToGeodetic(position, gmst);
+                            orbits.push({
+                                position: [
+                                    (geodetic.latitude * 180) / Math.PI,
+                                    (geodetic.longitude * 180) / Math.PI
+                                ],
+                                type: 'past'
+                            });
+                        }
+                    }
+
+                    // Future orbits (3 hours ahead)
+                    for (let i = 0; i <= 180; i++) {
+                        const futureTime = new Date(currentTime.getTime() + i * 60000);
+                        const positionAndVelocity = propagate(satrec, futureTime);
+                        const gmst = gstime(futureTime);
+
+                        const position = positionAndVelocity.position as EciVec3<number>;
+                        if (position && 'x' in position) {
+                            const geodetic = eciToGeodetic(position, gmst);
+                            orbits.push({
+                                position: [
+                                    (geodetic.latitude * 180) / Math.PI,
+                                    (geodetic.longitude * 180) / Math.PI
+                                ],
+                                type: 'future'
+                            });
+                        }
+                    }
+
+                    setOrbitPath(orbits);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        calculateOrbits();
+        const interval = setInterval(calculateOrbits, 60000);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const fetchISSPosition = async () => {
+            try {
+                const response = await fetch('http://api.open-notify.org/iss-now.json');
+                const data = await response.json();
+                setIssPosition([
+                    parseFloat(data.iss_position.latitude),
+                    parseFloat(data.iss_position.longitude)
+                ]);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchISSPosition();
+        const interval = setInterval(fetchISSPosition, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const renderOrbits = () => {
+        const segments: { past: [number, number][][], future: [number, number][][] } = {
+            past: [],
+            future: []
+        };
+        let currentPastSegment: [number, number][] = [];
+        let currentFutureSegment: [number, number][] = [];
+
+        orbitPath.forEach((point, index) => {
+            if (index > 0) {
+                const prevLon = orbitPath[index - 1].position[1];
+                const currentLon = point.position[1];
+
+                if (Math.abs(currentLon - prevLon) > 180) {
+                    if (point.type === 'past' && currentPastSegment.length > 0) {
+                        segments.past.push([...currentPastSegment]);
+                        currentPastSegment = [];
+                    } else if (point.type === 'future' && currentFutureSegment.length > 0) {
+                        segments.future.push([...currentFutureSegment]);
+                        currentFutureSegment = [];
+                    }
+                }
+            }
+
+            if (point.type === 'past') {
+                currentPastSegment.push(point.position);
+            } else {
+                currentFutureSegment.push(point.position);
+            }
         });
-    }, [selectedDate]);
 
-    const calculateMoonData = (lat: number, lon: number, date: Date): void => {
-        // Moon phase calculation
-        const phase = MoonPhase(date);
-        setMoonPhase(phase);
+        if (currentPastSegment.length > 0) segments.past.push(currentPastSegment);
+        if (currentFutureSegment.length > 0) segments.future.push(currentFutureSegment);
 
-        // Note: MoonTimes and MoonPosition are not available in astronomy-engine
-        // You'll need to implement alternative calculations or use a different library
-        // For now, setting dummy values
-        setMoonTimes({
-            rise: new Date().toLocaleTimeString(),
-            set: new Date().toLocaleTimeString()
-        });
-        setMoonAltitude(0);
-    };
-
-    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setSelectedDate(e.target.value);
-        calculateMoonData(latitude, longitude, new Date(e.target.value));
-    };
-
-    const handleLocationUpdate = (): void => {
-        const newLatStr = prompt('Enter Latitude', latitude.toString());
-        const newLonStr = prompt('Enter Longitude', longitude.toString());
-
-        const newLat = newLatStr ? parseFloat(newLatStr) : null;
-        const newLon = newLonStr ? parseFloat(newLonStr) : null;
-
-        if (newLat !== null && newLon !== null && !isNaN(newLat) && !isNaN(newLon)) {
-            setLatitude(newLat);
-            setLongitude(newLon);
-            calculateMoonData(newLat, newLon, new Date(selectedDate));
-        }
+        return (
+            <>
+                {segments.past.map((segment, index) => (
+                    <Polyline
+                        key={`past-${index}`}
+                        positions={segment}
+                        color="#ff6b6b"
+                        weight={2}
+                        opacity={0.7}
+                    />
+                ))}
+                {segments.future.map((segment, index) => (
+                    <Polyline
+                        key={`future-${index}`}
+                        positions={segment}
+                        color="#4ecdc4"
+                        weight={2}
+                        opacity={0.7}
+                    />
+                ))}
+            </>
+        );
     };
 
     return (
         <div className={styles.container}>
-            <header className={styles.header}>Moon Phase Tracker</header>
-
             <div className={styles.controls}>
-                <div className={styles.field}>
-                    <label>Date:</label>
-                    <input
-                        type="date"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        className={styles.input}
-                    />
-                </div>
-
-                <button onClick={handleLocationUpdate} className={styles.button}>Update Location</button>
-
-                <div className={styles.location}>
-                    Latitude: {latitude}, Longitude: {longitude}
-                </div>
+                <button
+                    onClick={() => setMapType(mapType === 'default' ? 'satellite' : 'default')}
+                    className={styles.mapToggle}
+                >
+                    {mapType === 'default' ? '위성 지도로 변경' : '기본 지도로 변경'}
+                </button>
             </div>
 
-            <div className={styles.results}>
-                <div className={styles.resultItem}>
-                    <h2>Moon Phase</h2>
-                    <p>{moonPhase}</p>
-                </div>
+            <MapContainer
+                center={[0, 0]}
+                zoom={2}
+                className={styles.map}
+                scrollWheelZoom={true}
+                maxBounds={maxBounds}
+                maxBoundsViscosity={1.0}
+                minZoom={2}
+            >
+                <TileLayer
+                    url={
+                        mapType === 'default'
+                            ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                            : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                    }
+                    noWrap={true}
+                    bounds={maxBounds}
+                />
 
-                <div className={styles.resultItem}>
-                    <h2>Moonrise & Moonset</h2>
-                    <p>Rise: {moonTimes.rise}</p>
-                    <p>Set: {moonTimes.set}</p>
-                </div>
-
-                <div className={styles.resultItem}>
-                    <h2>Moon Altitude</h2>
-                    <p>{moonAltitude.toFixed(2)}°</p>
-                </div>
-            </div>
-
-            <div className={styles.moonAnimation}></div>
+                {userPosition && <Marker position={userPosition} icon={userIcon} />}
+                <Marker position={issPosition} icon={issIcon} />
+                {renderOrbits()}
+            </MapContainer>
         </div>
     );
 };
 
-export default Home;
+export default ISSTracker;
