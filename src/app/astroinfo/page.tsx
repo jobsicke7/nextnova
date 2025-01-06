@@ -32,7 +32,7 @@ export default function CommunityPage() {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h1>커뮤니티</h1>
+                <h1>우주 소식</h1>
                 {session?.user.email === "kr.nextnova@gmail.com" && (
                     <Link href="/astroinfo/write" className={styles.writeButton}>
                         글쓰기
@@ -46,7 +46,7 @@ export default function CommunityPage() {
                         {post.authorEmail.includes("@") && (
                             <Link href={`/astroinfo/${post._id}`}>
                                 {post.authorEmail === 'kr.nextnova@gmail.com' && (
-                                    <span className={styles.noticeTag}>공지</span>
+                                    <span className={styles.noticeTag}>관리자</span>
                                 )}
                                 <span className={styles.postTitle}>{post.title}</span>
                                 <div className={styles.postMeta}>
