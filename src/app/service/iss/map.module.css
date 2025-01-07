@@ -114,7 +114,7 @@
 
     .mapContainer {
         width: 100%;
-        height: 50vh;
+        height: 40vh;
         /* 지도 높이 설정 */
         order: 1;
         /* 지도를 상단으로 배치 */
