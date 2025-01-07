@@ -8,11 +8,12 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
+  // `fetchPostById`가 Promise를 반환하므로, `await`로 데이터를 가져옵니다.
   const post = await fetchPostById(params.id);
 
   return {
     title: `NEXTNOVA | ${post?.title || "게시글"}`,
-    description: `${post?.authorName || ""}`,
+    description: post?.authorName || "",
     icons: {
       icon: "/favicon/favicon.ico",
     },
@@ -21,8 +22,10 @@ export async function generateMetadata({
 
 export default function CommunityPostLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { id: string }; // Ensure `params` is typed correctly here as well
 }) {
-  return <>{children}</>; // <html> 및 <body> 태그 제거
+  return <>{children}</>;
 }
