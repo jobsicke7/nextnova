@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import "@/styles/global.css";
 export const metadata: Metadata = {
   title: "NEXTNOVA",
-  description: "Welcome to NEXTNOVA",
+  description: "당신만의 우주, NEXTNOVA",
   icons: {
     icon: "./favicon/favicon.ico",
   },

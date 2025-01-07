@@ -10,6 +10,7 @@ export async function generateMetadata({
 
   return {
     title: `NEXTNOVA | 회원가입`,
+    description: "당신만의 우주, NEXTNOVA",
     icons: {
       icon: "/favicon/favicon.ico",
     },
