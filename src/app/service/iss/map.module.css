@@ -40,7 +40,7 @@
 }
 
 .daylight {
-    background-color: #ffd700;
+    background-color: #fdc600;
     color: black;
 }
 
@@ -50,6 +50,7 @@
 
 .videoContainer {
     flex: 1;
+
 }
 
 .map {
@@ -103,6 +104,10 @@
     text-align: right;
 }
 
+.daylight {
+    font-size: 20px;
+}
+
 /* 모바일 환경에서 반응형 처리 */
 @media (max-width: 900px) {
     .container {
@@ -112,9 +117,13 @@
         /* 높이 자동 조정 */
     }
 
+    .daylight {
+        font-size: 15px;
+    }
+
     .mapContainer {
         width: 100%;
-        height: 40vh;
+        height: 300px;
         /* 지도 높이 설정 */
         order: 1;
         /* 지도를 상단으로 배치 */

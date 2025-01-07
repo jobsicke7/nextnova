@@ -251,10 +251,10 @@ const ISSTracker = () => {
         <div className={styles.container}>
             <div className={styles.rightContainer}>
                 <div className={`${styles.infoContainer} ${issData?.visibility === 'daylight' ? styles.daylight : styles.nighttime}`}>
-                    <h2 style={{ marginBottom: '20px', fontSize: '20px' }}>
+                    <h2 style={{ marginBottom: '20px' }} className={styles.daylight}>
                         {issData?.visibility === 'daylight'
-                            ? "국제우주정거장이 낮에 있습니다"
-                            : "국제우주정거장이 밤에 있습니다"}
+                            ? "국제우주정거장이 낮 시간대에 위치해 있습니다"
+                            : "국제우주정거장이 밤 시간대에 위치해 있습니다"}
                     </h2>
 
                     <div className={styles.infoGrid}>
