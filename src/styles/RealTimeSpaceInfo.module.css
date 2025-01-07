@@ -17,9 +17,9 @@
 }
 
 .highlight {
-    font-size: 2.5rem;
+    font-size: 4rem;
     font-weight: bold;
-    background: linear-gradient(90deg, #ffd700, #ffea00);
+    background: linear-gradient(90deg, #ffd500, #ffea00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 5px rgba(255, 255, 0, 0.5),
