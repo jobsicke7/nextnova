@@ -17,6 +17,7 @@
     height: 100%;
     position: relative;
     order: 2;
+    z-index: 1;
     /* 기본 순서 */
 }
 
@@ -102,7 +103,7 @@
 }
 
 /* 모바일 환경에서 반응형 처리 */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .container {
         flex-direction: column;
         /* 세로 정렬 */
