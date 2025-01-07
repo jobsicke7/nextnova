@@ -148,9 +148,10 @@ const ISSTracker = () => {
     const formatTime = (timestamp: number) => {
         const date = new Date(timestamp * 1000);
 
-        const kst = new Date(date.getTime() + (9 * 60 * 60 * 1000));
-        const utc = date;
-        const pst = new Date(date.getTime() - (8 * 60 * 60 * 1000));
+        // 시간대 -9시간씩 조정
+        const kst = new Date(date.getTime() + (9 * 60 * 60 * 1000) - (9 * 60 * 60 * 1000)); // -9시간 적용
+        const utc = new Date(date.getTime() - (9 * 60 * 60 * 1000)); // -9시간 적용
+        const pst = new Date(date.getTime() - (8 * 60 * 60 * 1000) - (9 * 60 * 60 * 1000)); // -9시간 적용
 
         const formatOptions: Intl.DateTimeFormatOptions = {
             hour: '2-digit',
@@ -165,6 +166,7 @@ const ISSTracker = () => {
             pst: pst.toLocaleTimeString('en-US', formatOptions)
         };
     };
+
 
     // Render orbits
     const renderOrbits = () => {
@@ -231,8 +233,8 @@ const ISSTracker = () => {
                 <div className={`${styles.infoContainer} ${issData?.visibility === 'daylight' ? styles.daylight : styles.nighttime}`}>
                     <h2 style={{ marginBottom: '20px', fontSize: '20px' }}>
                         {issData?.visibility === 'daylight'
-                            ? "ISS가 낮에 있습니다."
-                            : "ISS가 밤에 있습니다."}
+                            ? "국제우주정거장이 낮에 있습니다"
+                            : "국제우주정거장이 밤에 있습니다"}
                     </h2>
 
                     <div className={styles.infoGrid}>
