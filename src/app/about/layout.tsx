@@ -1,26 +1,21 @@
-import { Metadata } from "next";
+import FNB from "@/components/fnb";
+import GNB from "@/components/gnb";
+import type { Metadata } from "next";
 import "@/styles/global.css";
+export const metadata: Metadata = {
+  title: "NEXTNOVA",
+  description: "당신만의 우주, NEXTNOVA",
+  icons: {
+    icon: "./favicon/favicon.ico",
+  },
+};
 
-// 동적 메타데이터 설정
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-
-  return {
-    title: `NEXTNOVA | About`,
-    description: "당신만의 우주, NEXTNOVA",
-    icons: {
-      icon: "/favicon/favicon.ico",
-    },
-  };
-}
-
-export default function CommunityPostLayout({
+export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
-  return <>{children}</>; // <html> 및 <body> 태그 제거
+}>) {
+  return (
+    <>{children}</>
+  );
 }
