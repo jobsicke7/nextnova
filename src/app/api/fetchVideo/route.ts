@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 
 const MONGO_URI =
-    "mongodb+srv://admin:MnXr3KDSK8IeYrUd@nextnova.bxjnh.mongodb.net/?retryWrites=true&w=majority&appName=nextnova";
+    "mongodb+srv://admin:jslove0619qq%40%40@logininfo.fhmwa.mongodb.net/?retryWrites=true&w=majority&appName=logininfo";
 
 export async function GET() {
     const client = new MongoClient(MONGO_URI);
