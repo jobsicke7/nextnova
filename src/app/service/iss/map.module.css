@@ -13,7 +13,7 @@
 }
 
 .mapContainer {
-    width: 86%;
+    width: 89%;
     height: 100%;
     position: relative;
     order: 2;
@@ -55,6 +55,7 @@
 .map {
     width: 100%;
     height: 100%;
+    border-radius: 8px;
 }
 
 .nightOverlay {
@@ -117,6 +118,16 @@
         /* 지도 높이 설정 */
         order: 1;
         /* 지도를 상단으로 배치 */
+        position: relative;
+        overflow: hidden;
+        /* 지도 영역을 초과하는 요소 숨김 */
+    }
+
+    .map {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        /* 지도의 가로 길이를 우선 맞춤 */
     }
 
     .rightContainer {

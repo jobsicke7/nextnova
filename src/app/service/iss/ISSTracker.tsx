@@ -29,8 +29,28 @@ const ISSTracker = () => {
     const [orbitPath, setOrbitPath] = useState<OrbitPoint[]>([]);
     const [issData, setIssData] = useState<ISSData | null>(null);
     const [nightBounds, setNightBounds] = useState<LatLngBounds | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
 
-    // Define map bounds
+    useEffect(() => {
+        const checkMobile = () => {
+            const mobile = window.innerWidth <= 900;
+            setIsMobile(mobile);
+        };
+
+        // 초기 판단
+        checkMobile();
+
+        // resize 이벤트 핸들러 등록
+        window.addEventListener('resize', checkMobile);
+
+        // cleanup
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    useEffect(() => {
+        console.log('isMobile:', isMobile); // 상태 변경될 때 출력
+    }, [isMobile]); // isMobile 값이 변경될 때만 실행
+
     const maxBounds: [[number, number], [number, number]] = [
         [-90, -180],
         [90, 180],
@@ -279,6 +299,7 @@ const ISSTracker = () => {
                 </div>
             </div>
             <div className={styles.mapContainer}>
+
                 <div className={styles.controls}>
                     <button
                         onClick={() => setMapType(mapType === "default" ? "satellite" : "default")}
@@ -289,13 +310,13 @@ const ISSTracker = () => {
                 </div>
 
                 <MapContainer
+                    key={isMobile ? "mobile" : "desktop"} // 상태 변경 시 리렌더링 유도
                     center={[0, 0]}
-                    zoom={2}
+                    zoom={isMobile ? 0 : 2}
                     className={styles.map}
                     scrollWheelZoom={true}
                     maxBounds={maxBounds}
-                    maxBoundsViscosity={1.0}
-                    minZoom={2}
+                    minZoom={isMobile ? 0.4 : 2} // 동적 설정
                 >
                     <TileLayer
                         url={
@@ -306,9 +327,6 @@ const ISSTracker = () => {
                         noWrap={true}
                         bounds={maxBounds}
                     />
-
-
-
                     {userPosition && <Marker position={userPosition} icon={userIcon} />}
                     <Marker position={issPosition} icon={issIcon} />
                     {renderOrbits()}
@@ -316,7 +334,7 @@ const ISSTracker = () => {
             </div>
 
 
-        </div>
+        </div >
     );
 };
 
