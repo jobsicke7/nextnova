@@ -1,4 +1,5 @@
 .container {
+    margin-top: 100px;
     width: 100%;
     margin: 0 auto;
     height: 74vh;
@@ -6,6 +7,8 @@
     display: flex;
     gap: 20px;
     flex-direction: row;
+    min-height: auto;
+    margin-bottom: 20px;
     /* 기본적으로 데스크톱에서 수평 정렬 */
 }
 
@@ -105,7 +108,6 @@
         /* 세로 정렬 */
         height: auto;
         /* 높이 자동 조정 */
-        margin-bottom: 30px;
     }
 
     .mapContainer {

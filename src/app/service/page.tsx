@@ -8,7 +8,7 @@ const ContactPage = () => {
         <div className={styles.contactContainer} style={{}}>
             <div className={styles.contactContainer}>
                 <h1 className={styles.title}>서비스</h1>
-                <p className={styles.subtitle}>NEXTNOVA가 제공하는 모든 서비를 확인해보세요!</p>
+                <p className={styles.subtitle}>NEXTNOVA가 제공하는 모든 서비스를 확인해보세요!</p>
 
                 <div className={styles.contactMethods}>
                     <div className={styles.contactCard}>

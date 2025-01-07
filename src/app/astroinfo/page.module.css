@@ -73,3 +73,34 @@
     float: right;
     color: #ddd;
 }
+
+.recentPost a {
+    text-decoration: none;
+}
+
+.recentPost {
+    line-height: 1.6;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #0d1117;
+    border-radius: 4px;
+    border: 1px solid #333;
+    color: white;
+}
+
+.recentPostTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.recentPostContent {
+    font-size: 14px;
+    color: #c7c7c7;
+    margin: 8px 0;
+}
+
+.recentPostMeta {
+    font-size: 12px;
+    color: #c7c7c7;
+}
