@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './moon.module.css';
 import Image from 'next/image';
@@ -20,8 +20,11 @@ interface MoonInfo {
     moonrise: string;
     moonset: string;
 }
-
+interface ImageCache {
+    [key: number]: string;
+}
 const MoonPhasePage = () => {
+
     const calculateMoonAge = (phase: number): number => {
         return phase * 29.530588853; // 평균 달의 위상 주기
     };
@@ -113,6 +116,32 @@ const MoonPhasePage = () => {
         longitude: 0,
         altitude: 0
     });
+    const [imageCache, setImageCache] = useState<ImageCache>({});
+    const [isLoading, setIsLoading] = useState(true);
+    const preloadedImages = useRef<HTMLImageElement[]>([]);
+    const preloadImages = async () => {
+        setIsLoading(true);
+        const imagePromises: Promise<void>[] = [];
+
+        for (let i = 1; i <= 30; i++) {
+            const promise = new Promise<void>((resolve) => {
+                const img = new window.Image();
+                img.onload = () => {
+                    setImageCache(prev => ({
+                        ...prev,
+                        [i]: `/images/moonimg/${i}.png`
+                    }));
+                    resolve();
+                };
+                img.src = `/images/moonimg/${i}.png`;
+                preloadedImages.current.push(img);
+            });
+            imagePromises.push(promise);
+        }
+
+        await Promise.all(imagePromises);
+        setIsLoading(false);
+    };
     const calculateMoonInfo = (date: Date, phase: number, lat: number, lon: number): MoonInfo => {
         const jd = getJulianDate(date);
         const distance = calculateMoonDistance(jd);
@@ -129,7 +158,14 @@ const MoonPhasePage = () => {
             moonset
         };
     };
+    useEffect(() => {
+        preloadImages();
 
+        return () => {
+            preloadedImages.current = [];
+            setImageCache({});
+        };
+    }, []);
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -272,7 +308,7 @@ const MoonPhasePage = () => {
     };
     const getMoonPhaseImage = (phase: number): number => {
         // 위상값(0-1)을 1-30 사이의 정수로 변환
-        let imageNumber = Math.round(phase * 30) - 2;
+        let imageNumber = Math.round(phase * 30);
 
         // 경계값 처리
         if (imageNumber === 0) imageNumber = 30;
@@ -305,7 +341,7 @@ const MoonPhasePage = () => {
         coordinates.latitude,
         coordinates.longitude
     );
-
+    const currentPhaseImage = getMoonPhaseImage(moonPhase);
     const phaseName = getMoonPhaseName(moonPhase);
 
     return (
@@ -340,14 +376,19 @@ const MoonPhasePage = () => {
 
                 <div className={styles.phaseInfo}>
                     <div className={styles.label}>달의 위상</div>
-                    <Image
-                        src={`/images/moonimg/${getMoonPhaseImage(moonPhase)}.png`}
-                        alt={phaseName}
-                        width={200}
-                        height={200}
-                        className={styles.moonImage}
-                        priority
-                    />
+                    {isLoading ? (
+                        <div className={styles.loading}>Loading...</div>
+                    ) : (
+                        <Image
+                            src={imageCache[currentPhaseImage] || `/images/moonimg/${currentPhaseImage}.png`}
+                            alt={phaseName}
+                            width={200}
+                            height={200}
+                            className={styles.moonImage}
+                            priority={true}
+                            loading="eager"
+                        />
+                    )}
                     <div className={styles.phaseName}>{phaseName}</div>
                     <div className={styles.phaseValue}>
                         위상값: {(moonPhase * 100).toFixed(1)}%
