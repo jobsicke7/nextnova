@@ -1,0 +1,118 @@
+.container {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #1a1a2e, #16213e);
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: rgba(26, 26, 46, 0.95);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 32rem;
+    width: 100%;
+    color: white;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.dateControl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.locationInfo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.label {
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+}
+
+.value {
+    font-size: 1.1rem;
+}
+
+.phaseInfo {
+    text-align: center;
+}
+
+.phaseName {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.phaseValue {
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+
+.moonImage {
+    width: 200px;
+    height: 200px;
+    margin: 2rem auto;
+    border-radius: 50%;
+    display: block;
+    background: #1a1a2e;
+    padding: 0.5rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.infoCard {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.infoLabel {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.infoValue {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
