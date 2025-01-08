@@ -19,14 +19,6 @@ export default function CommunityPage() {
             .then(res => res.json())
             .then(data => {
                 const sortedPosts = data.sort((a: Post, b: Post) => {
-                    const isANotice = a.authorEmail === 'kr.nextnova@gmail.com';
-                    const isBNotice = b.authorEmail === 'kr.nextnova@gmail.com';
-
-                    if (isANotice && !isBNotice) return -1;
-                    if (!isANotice && isBNotice) return 1;
-                    if (isANotice && isBNotice) {
-                        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-                    }
                     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
                 });
                 setPosts(sortedPosts);

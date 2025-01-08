@@ -251,6 +251,7 @@ const MoonPhasePage = () => {
 
         // 최종 위상 계산
         phase = (phase + moonEccCorrection + sunEccCorrection + latitudeCorrection + longitudeCorrection + refractionCorrection) % 360;
+        console.log(phase)
 
         // 0-1 범위로 정규화
         let normalizedPhase = phase / 360;
@@ -271,7 +272,7 @@ const MoonPhasePage = () => {
     };
     const getMoonPhaseImage = (phase: number): number => {
         // 위상값(0-1)을 1-30 사이의 정수로 변환
-        let imageNumber = Math.round(phase * 30);
+        let imageNumber = Math.round(phase * 30) - 2;
 
         // 경계값 처리
         if (imageNumber === 0) imageNumber = 30;
