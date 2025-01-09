@@ -250,8 +250,8 @@ const ISSTracker = () => {
     return (
         <div className={styles.container}>
             <div className={styles.rightContainer}>
-                <div className={`${styles.infoContainer} ${issData?.visibility === 'daylight' ? styles.daylight : styles.nighttime}`}>
-                    <h2 style={{ marginBottom: '20px' }} className={styles.daylight}>
+                <div className={`${styles.infoContainer}`}>
+                    <h2 style={{ marginBottom: '20px' }} className={issData?.visibility === 'daylight' ? styles.daylight : styles.nighttime}>
                         {issData?.visibility === 'daylight'
                             ? "국제우주정거장이 낮 시간대에 위치해 있습니다"
                             : "국제우주정거장이 밤 시간대에 위치해 있습니다"}

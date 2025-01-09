@@ -36,16 +36,16 @@
     padding: 20px;
     border-radius: 8px;
     color: white;
+    background-color: #424242;
     font-size: 16px;
 }
 
 .daylight {
-    background-color: #fdc600;
-    color: black;
+    color: #fdc600;
 }
 
 .nighttime {
-    background-color: #000080;
+    color: #000080;
 }
 
 .videoContainer {
